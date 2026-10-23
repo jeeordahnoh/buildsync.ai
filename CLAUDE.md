@@ -50,5 +50,11 @@ behaviour is never mistaken for a bug.
 
 - The homepage must work on current desktop, laptop, tablet and phone browsers
   (Chrome, Edge, Firefox, Safari, Samsung Internet) with no horizontal page scroll
-  from 320px to very wide screens, and with touch as well as mouse and keyboard.
+  from 280px to very wide screens, and with touch as well as mouse and keyboard.
+  The supported versions are the `browserslist` in `package.json` (see the README
+  table); keep the two in step.
+- Wrap any new `:hover` style in `@media (hover: hover)`; never make a menu depend
+  on mouse events alone (use pointer events and check `pointerType`).
+- Keep fonts and other core assets on this site. Do not add Google Fonts or other
+  third-party links.
 - Run `npm run typecheck` and `npm run build` before committing.

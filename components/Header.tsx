@@ -25,6 +25,20 @@
  * USED BY
  *   app/(marketing)/layout.tsx (so every marketing page gets it).
  *
+ * MOUSE, TOUCH AND KEYBOARD (how the mega-menus behave)
+ *   - Mouse: hovering a menu name opens it, leaving the header closes it.
+ *     Clicking the name keeps it open.
+ *   - Touch / pen: tapping a menu name opens it, tapping it again closes it,
+ *     tapping anywhere outside the header closes it.
+ *   - Keyboard: Enter or Space on a menu name toggles it; Escape closes it.
+ *     Tab moves into the open panel's links.
+ *   - Choosing a link inside a panel closes the panel.
+ *   Why the hover handlers are written with pointer events: a tap on a touch
+ *   screen also produces "fake" mouse events (iPad and Android do this). If the
+ *   menus opened on those, the tap would open the menu and the click that
+ *   follows would close it again (the first tap would seem to do nothing).
+ *   `pointerType` tells mouse from finger, so hover only reacts to a real mouse.
+ *
  * IF SOMETHING BREAKS
  *   - Announcement bar comes back after dismissing: the choice is saved in
  *     localStorage under the key "bs-ann" (value "1" = dismissed). It is read
@@ -32,15 +46,25 @@
  *     browser render match (prevents a hydration warning). Returning visitors
  *     can therefore see the bar for a split second. To test again, delete that
  *     key in the browser dev tools.
- *   - A mega-menu stays open: it closes on mouse-leave of the whole <header>,
- *     on the Escape key, and when hovering a plain link such as "Pricing".
+ *   - A mega-menu stays open: it closes on a mouse leaving the <header>, on a
+ *     press outside the header (document listener in the effect that depends on
+ *     `open`), on the Escape key, on choosing a link, and when a mouse hovers a
+ *     plain link such as "Pricing".
+ *   - A menu opens and closes by itself on a touch screen: some handler reacts
+ *     to a mouse event instead of a pointer event. Keep hover handlers on
+ *     onPointerEnter / onPointerLeave and check `pointerType === "mouse"`.
  *   - Page cannot scroll after closing the search or mobile menu: the last
  *     useEffect in SiteHeader locks body scroll while either is open.
+ *   - Older browsers without Pointer Events (iOS 12 and earlier): menus open by
+ *     click/tap only (no hover), and the "press outside" listener uses mouse and
+ *     touch events instead. Everything still works.
  *   - Types: Mega and the mobile menu read NAV through `any` casts, so TypeScript
  *     will not warn if the NAV shape in lib/site.ts changes.
  *   - Styling: classes (.ann, .hdr, .mega, .overlay, .sheet, ...) are in
  *     app/globals.css under "announcement" and "header". The desktop menu hides
- *     and the hamburger appears at 1100px wide and below.
+ *     and the hamburger appears at 1320px wide and below (the full header needs
+ *     about 1270px). The drop-down panel is positioned against .hdr (the
+ *     sticky header), which is why .nav-i is `position: static`.
  *   - Not wired yet: the search box has no search backend (the "recent" and
  *     "suggested" chips are fixed placeholders linking to /product), and the
  *     waitlist form only prevents the page reload; it sends nothing.
@@ -48,7 +72,7 @@
  */
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NAV } from "@/lib/site";
 import { Icon, Logo } from "./Icon";
 
@@ -91,19 +115,22 @@ type Item = (typeof NAV)[number];
  * One desktop mega-menu panel (the white drop-down under the header).
  * Layout, left to right: the link columns, then either a spotlight card
  * (`spotlight`) or the waitlist form (`waitlist`), whichever the NAV entry has.
+ * `onNavigate` is called when a link is chosen so the panel can close.
  * `any` is used because NAV is a read-only union (see note in the file header).
+ * (Plain links, no ARIA "menu" roles: those roles promise arrow-key behaviour
+ * that this simple disclosure menu does not have, which confuses screen readers.)
  */
-function Mega({ item }: { item: Extract<Item, { cols: unknown }> }) {
+function Mega({ item, onNavigate }: { item: Extract<Item, { cols: unknown }>; onNavigate: () => void }) {
   const it = item as any;
   return (
-    <div className="mega" role="menu">
+    <div className="mega">
       <div className="mega-in">
         {/* link columns; links with `soon` get a "Coming soon" tag */}
         {it.cols.map((c: any) => (
           <div key={c.title} className="mega-col">
             <h4>{c.title}</h4>
             {c.links.map((l: any) => (
-              <Link key={l.label} href={l.href} role="menuitem">
+              <Link key={l.label} href={l.href} onClick={onNavigate}>
                 {l.label}
                 {l.soon && <em className="tag">Coming soon</em>}
               </Link>
@@ -112,7 +139,7 @@ function Mega({ item }: { item: Extract<Item, { cols: unknown }> }) {
         ))}
         {/* spotlight card on the right (Product, Solutions, Learn) */}
         {it.spotlight && (
-          <Link href={it.spotlight.href} className="mega-spot">
+          <Link href={it.spotlight.href} className="mega-spot" onClick={onNavigate}>
             <strong>{it.spotlight.title}</strong>
             <span>{it.spotlight.body}</span>
             <Icon name="arrow" size={18} />
@@ -146,6 +173,10 @@ function Mega({ item }: { item: Extract<Item, { cols: unknown }> }) {
  *   search  true while the full-screen search overlay is open
  *   mobile  true while the full-screen mobile menu is open
  *   acc     label of the expanded accordion section in the mobile menu
+ * Refs (changing them does not re-render the page):
+ *   headerRef    the <header> element, to tell a press inside it from one outside
+ *   lastPointer  how the last press on a menu name was made: "mouse", "touch",
+ *                "pen" or "keyboard" (decides whether a click toggles or not)
  */
 export function SiteHeader() {
   const [shrunk, setShrunk] = useState(false);
@@ -153,6 +184,8 @@ export function SiteHeader() {
   const [search, setSearch] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [acc, setAcc] = useState<string | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const lastPointer = useRef("");
 
   // Scroll listener: toggles `shrunk`. Runs once on mount so a page reloaded
   // part-way down starts in the right state; removed on unmount.
@@ -170,34 +203,65 @@ export function SiteHeader() {
   }, []);
   // Lock page scrolling while the search overlay or mobile menu is open.
   useEffect(() => { document.body.style.overflow = mobile || search ? "hidden" : ""; }, [mobile, search]);
+  // While a mega-menu is open, a press (mouse, finger or pen) anywhere outside the
+  // header closes it. Touch screens have no "mouse leaves" event, so this is how a
+  // tapped-open menu gets closed. Browsers without Pointer Events (iOS 12 and
+  // earlier) get mouse + touch events instead.
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: Event) => {
+      const t = e.target;
+      if (!(t instanceof Node) || !headerRef.current || !headerRef.current.contains(t)) setOpen(null);
+    };
+    const types = typeof window.PointerEvent === "function" ? ["pointerdown"] : ["mousedown", "touchstart"];
+    types.forEach((t) => document.addEventListener(t, away));
+    return () => types.forEach((t) => document.removeEventListener(t, away));
+  }, [open]);
 
   return (
     <>
-      {/* leaving the header with the mouse closes any open mega-menu */}
-      <header className={`hdr ${shrunk ? "hdr-s" : ""}`} onMouseLeave={() => setOpen(null)}>
+      {/* leaving the header with a real mouse closes any open mega-menu (touch is ignored on purpose) */}
+      <header
+        ref={headerRef}
+        className={`hdr ${shrunk ? "hdr-s" : ""}`}
+        onPointerLeave={(e) => { if (e.pointerType === "mouse") setOpen(null); }}
+      >
         <div className="hdr-in">
           <Link href="/" aria-label="BuildSync home"><Logo /></Link>
-          {/* desktop menu: dropdown entries (with `cols`) vs plain links */}
+          {/* desktop menu: dropdown entries (with `cols`) vs plain links.
+              Hover opens only for a real mouse; a mouse click keeps the menu open, a tap or key press toggles it. */}
           <nav className="nav" aria-label="Primary">
             {NAV.map((n) =>
               "cols" in n ? (
-                <div key={n.label} className="nav-i" onMouseEnter={() => setOpen(n.label)}>
+                <div
+                  key={n.label}
+                  className="nav-i"
+                  onPointerEnter={(e) => { if (e.pointerType === "mouse") setOpen(n.label); }}
+                >
                   <button
                     aria-expanded={open === n.label}
-                    onClick={() => setOpen(open === n.label ? null : n.label)}
-                    onFocus={() => setOpen(n.label)}
+                    onPointerDown={(e) => { lastPointer.current = e.pointerType; }}
+                    onKeyDown={() => { lastPointer.current = "keyboard"; }}
+                    onClick={() => setOpen((cur) => (lastPointer.current === "mouse" ? n.label : cur === n.label ? null : n.label))}
                   >
                     {n.label}<Icon name="chev" size={14} />
                   </button>
-                  {open === n.label && <Mega item={n as any} />}
+                  {open === n.label && <Mega item={n as any} onNavigate={() => setOpen(null)} />}
                 </div>
               ) : (
-                <Link key={n.label} href={n.href} className="nav-l" onMouseEnter={() => setOpen(null)}>{n.label}</Link>
+                <Link
+                  key={n.label}
+                  href={n.href}
+                  className="nav-l"
+                  onPointerEnter={(e) => { if (e.pointerType === "mouse") setOpen(null); }}
+                >
+                  {n.label}
+                </Link>
               )
             )}
           </nav>
           {/* right side: search, language label, log in, and the two CTAs.
-              Hidden below 1100px (the hamburger takes over). */}
+              Hidden below 1320px (the hamburger takes over; "Start free" stays). */}
           <div className="hdr-r">
             <button className="icon-btn" aria-label="Search" onClick={() => setSearch(true)}><Icon name="search" /></button>
             <button className="loc" aria-label="Language and region">EN · US</button>
@@ -206,7 +270,7 @@ export function SiteHeader() {
             <Link href="/signup" className="btn btn-primary btn-sm">Start free</Link>
           </div>
           {/* hamburger: only visible on small screens; opens the mobile menu */}
-          <button className="icon-btn burger" aria-label="Open menu" onClick={() => setMobile(true)}><Icon name="menu" size={24} /></button>
+          <button className="icon-btn burger" aria-label="Open menu" aria-expanded={mobile} onClick={() => setMobile(true)}><Icon name="menu" size={24} /></button>
         </div>
       </header>
 

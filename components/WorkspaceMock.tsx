@@ -29,11 +29,11 @@
  *     at x=830). Moving one zone means checking the others.
  *   - House looks skewed or off-centre: check S, CX, CY (projection) and
  *     W, D, H, R (house size) just below.
- *   - All text in the mock takes its font from the page CSS: the rule
- *     `.mock text` in app/globals.css sets the sans font. The
- *     `fontFamily="var(--mono)"` attributes on some <text> elements are
- *     overridden by that rule (a CSS rule beats an SVG attribute), so they have
- *     no visible effect today. The SVG only looks right inside the site.
+ *   - All text in the mock takes its font from the page CSS: `.mock text` in
+ *     app/globals.css sets the sans font, and the class `t-mono` (rule
+ *     `.mock .t-mono`) switches a <text> to the monospace font. A class is used
+ *     because a CSS rule always beats an SVG font-family attribute, and because
+ *     it works in every browser. The SVG only looks right inside the site.
  *   - The words "{{PRICE}}" inside PANELS are placeholder text that visitors
  *     can see in the "Spent", "Hard costs" and similar rows. Replace them when
  *     prices/costs are final.
@@ -149,11 +149,11 @@ function Plan2D() {
       <rect x="0" y="0" width="440" height="300" fill="#10151c" />
       <path d="M0 150h200M200 0v150M260 150v150M260 150h180M330 0v150" />
       <path d="M200 80a30 30 0 000-30" stroke="#4C8DFF" />
-      <text x="40" y="82" fill="#8892a3" stroke="none" fontSize="13" fontFamily="var(--mono)">BED 1</text>
-      <text x="230" y="82" fill="#8892a3" stroke="none" fontSize="13" fontFamily="var(--mono)">BATH</text>
-      <text x="360" y="82" fill="#8892a3" stroke="none" fontSize="13" fontFamily="var(--mono)">BED 2</text>
-      <text x="60" y="230" fill="#8892a3" stroke="none" fontSize="13" fontFamily="var(--mono)">LIVING / KITCHEN</text>
-      <text x="320" y="230" fill="#8892a3" stroke="none" fontSize="13" fontFamily="var(--mono)">PORCH</text>
+      <text x="40" y="82" fill="#8892a3" stroke="none" fontSize="13" className="t-mono">BED 1</text>
+      <text x="230" y="82" fill="#8892a3" stroke="none" fontSize="13" className="t-mono">BATH</text>
+      <text x="360" y="82" fill="#8892a3" stroke="none" fontSize="13" className="t-mono">BED 2</text>
+      <text x="60" y="230" fill="#8892a3" stroke="none" fontSize="13" className="t-mono">LIVING / KITCHEN</text>
+      <text x="320" y="230" fill="#8892a3" stroke="none" fontSize="13" className="t-mono">PORCH</text>
     </g>
   );
 }
@@ -217,7 +217,7 @@ function Panel({ view }: { view: MockView }) {
         <g key={a} transform={`translate(18,${72 + i * 52})`}>
           <circle cx="5" cy="-4" r="4" fill={TONE[t]} />
           <text x="20" y="0" fill="#c8cfdb" fontSize="13">{a}</text>
-          <text x="20" y="20" fill={t === "info" ? "#8892a3" : TONE[t]} fontSize="12" fontFamily="var(--mono)">{b}</text>
+          <text x="20" y="20" fill={t === "info" ? "#8892a3" : TONE[t]} fontSize="12" className="t-mono">{b}</text>
         </g>
       ))}
     </g>
@@ -246,7 +246,7 @@ export function WorkspaceMock({ view = "compliance", chip, crop }: { view?: Mock
       {["Home", "Draw", "Analyze", "AI", "Output"].map((t, i) => (
         <text key={t} x={60 + i * 76} y="28" fill={i === 1 ? "#fff" : "#8892a3"} fontSize="13">{t}</text>
       ))}
-      <text x="1010" y="28" fill="#8892a3" fontSize="11" fontFamily="var(--mono)">AI-generated · unstamped</text>
+      <text x="1010" y="28" fill="#8892a3" fontSize="11" className="t-mono">AI-generated · unstamped</text>
       {/* explorer: model tree on the left (first item highlighted, leading spaces = indent) */}
       <rect y="44" width="190" height="570" fill="#0e1218" />
       {["Sample house", "  Site", "  Structure", "  Envelope", "  MEP", "Schedule", "Reports"].map((t, i) => (
@@ -267,13 +267,13 @@ export function WorkspaceMock({ view = "compliance", chip, crop }: { view?: Mock
                 <rect width="230" height="100" rx="12" fill="#10151c" stroke="#222a36" />
                 <circle cx="34" cy="50" r="14" fill="#4C8DFF" opacity={0.9 - i * 0.12} />
                 <text x="62" y="46">{n}</text>
-                <text x="62" y="66" fill="#22c55e" fontSize="11" fontFamily="var(--mono)">MCP · connected</text>
+                <text x="62" y="66" fill="#22c55e" fontSize="11" className="t-mono">MCP · connected</text>
               </g>
             ))}
           </g>
         )}
         {/* viewport footer text (compass + 2D/3D/section switch labels) */}
-        <text x="214" y="596" fill="#4a5568" fontSize="11" fontFamily="var(--mono)">N ↑   ·   2D  3D  SECTION   ·   Layers</text>
+        <text x="214" y="596" fill="#4a5568" fontSize="11" className="t-mono">N ↑   ·   2D  3D  SECTION   ·   Layers</text>
       </g>
       {/* results panel on the right */}
       <Panel view={view} />
@@ -288,7 +288,7 @@ export function WorkspaceMock({ view = "compliance", chip, crop }: { view?: Mock
       ))}
       {view === "timeline" && <rect x="208" y="620" width="186" height="26" rx="8" fill="none" stroke="#4C8DFF" strokeDasharray="4 3" />}
       {/* command line text under the timeline bars */}
-      <text x="214" y="666" fill="#8892a3" fontSize="12" fontFamily="var(--mono)">&gt; show me what’s built in the first 3 months</text>
+      <text x="214" y="666" fill="#8892a3" fontSize="12" className="t-mono">&gt; show me what’s built in the first 3 months</text>
       {/* caption chip (only when the `chip` prop is given). Width is estimated at
           about 7.6 px per character plus 30 px padding. */}
       {chip && (

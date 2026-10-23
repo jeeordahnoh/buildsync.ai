@@ -28,6 +28,9 @@
  *     `.car-track { gap: 20px }` in app/globals.css. On phones (600px and below)
  *     cards are 272 px wide, so one click moves a little more than one card;
  *     scroll-snap then settles on the nearest card.
+ *   - The row jumps instead of gliding: either the browser has no smooth
+ *     scrolling (Safari before 15.4 uses `scrollLeft` instead) or the visitor's
+ *     system has "reduce motion" switched on. Both are intended.
  *   - Arrow keys do nothing: the list itself must have keyboard focus
  *     (tabIndex=0), so click or Tab onto it first.
  *   - Screen readers: the two `sr-only` paragraphs announce "Start of 8-item
@@ -48,11 +51,22 @@ import { WorkspaceMock, MockView } from "./WorkspaceMock";
 /**
  * The feature card carousel.
  * `track` points at the scrolling <ul>. `go(d)` scrolls it by d cards
- * (d = 1 forward, -1 back) with a smooth animation.
+ * (d = 1 forward, -1 back): smoothly where the browser supports it and the
+ * visitor has not asked for reduced motion, otherwise with an instant jump.
  */
 export function FeatureCarousel() {
   const track = useRef<HTMLUListElement>(null);
-  const go = (d: number) => track.current?.scrollBy({ left: d * 324, behavior: "smooth" });
+  const go = (d: number) => {
+    const el = track.current;
+    if (!el) return;
+    const left = d * 324;
+    // Smooth scrolling needs browser support (Safari before 15.4 has none) and is skipped for
+    // visitors who asked for reduced motion; in those cases the row jumps instead.
+    const canSmooth = "scrollBehavior" in document.documentElement.style;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (canSmooth) el.scrollBy({ left, behavior: reduce ? "auto" : "smooth" });
+    else el.scrollLeft += left;
+  };
   return (
     <div className="car">
       {/* read by screen readers only: marks the start of the list */}

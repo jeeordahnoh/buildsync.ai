@@ -31,8 +31,9 @@
  *   - On narrow screens the table keeps a minimum width of 620px and scrolls
  *     sideways inside its own box (.table-wrap); the page itself must not
  *     scroll sideways. Styles: app/globals.css under "compare".
- *   - The competitor buttons change only on click / Enter / Space (no arrow-key
- *     navigation between them yet).
+ *   - The competitor buttons are plain toggle buttons (a group with
+ *     aria-pressed), not ARIA "tab" roles; they work with mouse, touch, Enter
+ *     and Space.
  */
 "use client";
 import { useState } from "react";
@@ -48,9 +49,9 @@ export function CompareTable() {
   return (
     <div>
       {/* competitor selector buttons; the selected one is dark ("on") */}
-      <div className="pills" role="tablist" aria-label="Competitor">
+      <div className="pills" role="group" aria-label="Competitor">
         {COMPETITORS.map((x) => (
-          <button key={x} role="tab" aria-selected={x === c} className={x === c ? "on" : ""} onClick={() => setC(x)}>{x}</button>
+          <button key={x} aria-pressed={x === c} className={x === c ? "on" : ""} onClick={() => setC(x)}>{x}</button>
         ))}
       </div>
       <div className="table-wrap">

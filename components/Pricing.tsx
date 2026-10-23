@@ -27,6 +27,8 @@
  * IF SOMETHING BREAKS
  *   - The switch only chooses which key of PRICES is read ("monthly" or
  *     "yearly"). While both are "{{PRICE}}" nothing visibly changes.
+ *   - The two switch buttons carry aria-pressed so screen readers announce
+ *     which one is selected.
  *   - A bullet written as "Text|soon" is split on "|": the part after it
  *     triggers a grey "Coming soon" tag (see "Civil 3D import|soon").
  *   - Plan card links: /signup?plan=... and /government#contact. Those pages
@@ -67,8 +69,8 @@ export function Pricing() {
     <div>
       {/* Monthly / Yearly switch (selected side is dark) */}
       <div className="toggle" role="group" aria-label="Billing period">
-        <button className={!yearly ? "on" : ""} onClick={() => setYearly(false)}>Monthly</button>
-        <button className={yearly ? "on" : ""} onClick={() => setYearly(true)}>Yearly</button>
+        <button className={!yearly ? "on" : ""} aria-pressed={!yearly} onClick={() => setYearly(false)}>Monthly</button>
+        <button className={yearly ? "on" : ""} aria-pressed={yearly} onClick={() => setYearly(true)}>Yearly</button>
         <span className="tag tag-accent">2 months free</span>
       </div>
       <div className="plans">

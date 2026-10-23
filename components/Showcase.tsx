@@ -26,8 +26,10 @@
  * IF SOMETHING BREAKS
  *   - To add, remove or reword a tab, edit TABS below (label, mock view,
  *     bullets). `view` must be a valid MockView name.
- *   - Tabs change only by click / Enter / Space on the tab button (there is no
- *     arrow-key navigation between tabs yet).
+ *   - The tabs are plain toggle buttons (a group of buttons with aria-pressed),
+ *     not ARIA "tab" roles: the tab role promises arrow-key navigation between
+ *     tabs, which this simple gallery does not need. Each button works with
+ *     mouse, touch, Enter and Space.
  *   - Layout classes (.tabs, .show-grid, .callouts, .show-img) are in
  *     app/globals.css under "dark bands". On screens 860px wide and below the
  *     bullets move under the image (.callouts order: 2).
@@ -61,13 +63,13 @@ export function Showcase() {
   return (
     <div>
       {/* tab buttons; the selected one gets the "on" class (white pill) */}
-      <div className="tabs" role="tablist" aria-label="Workspace views">
+      <div className="tabs" role="group" aria-label="Workspace views">
         {TABS.map((x, n) => (
-          <button key={x.label} role="tab" aria-selected={n === t} className={n === t ? "on" : ""} onClick={() => setT(n)}>{x.label}</button>
+          <button key={x.label} aria-pressed={n === t} className={n === t ? "on" : ""} onClick={() => setT(n)}>{x.label}</button>
         ))}
       </div>
       {/* selected tab content: bullets on the left, image on the right */}
-      <div className="show-grid" role="tabpanel">
+      <div className="show-grid">
         <ul className="callouts">
           {tab.bullets.map((b) => (
             <li key={b}><Icon name="check" size={18} />{b}</li>
