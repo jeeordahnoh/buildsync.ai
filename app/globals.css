@@ -1,17 +1,66 @@
+/**
+ * BuildSync AI · app/globals.css
+ *
+ * Author:    Giordano Bertin-Maurice
+ * Copyright: © 2026 Giordano Bertin-Maurice. All rights reserved.
+ *
+ * WHAT IT DOES
+ *   The single global stylesheet of the website: colours, fonts, spacing,
+ *   buttons, every homepage section, and the responsive (phone / tablet /
+ *   laptop) rules. Plain CSS, no framework.
+ *
+ * WHAT IT IS FOR
+ *   Gives the whole site one look (spec section 3: light page, black product
+ *   bands, one blue accent, Inter + IBM Plex Mono, pill buttons, 12px cards).
+ *
+ * USED BY
+ *   Loaded once by app/layout.tsx, so it applies to every page. The class names
+ *   below are used by the components in components/ and by
+ *   app/(marketing)/page.tsx.
+ *
+ * HOW THE FILE IS ORGANISED (top to bottom)
+ *   1. Design tokens (:root)        6. Hero
+ *   2. Base reset and helpers       7. Sections: tiles, carousel, how-it-works,
+ *   3. Typography                       AI cards, spotlights, dark bands, steps,
+ *   4. Buttons, tags, logo              compare, stats, pricing, learn/news, CTA
+ *   5. Announcement bar + header    8. Footer
+ *      + search + mobile menu       9. Motion preferences
+ *                                  10. Responsive rules (@media at the very end)
+ *
+ * IF SOMETHING BREAKS
+ *   - Wrong colour or font everywhere: check the design tokens in :root first.
+ *   - Layout breaks at one screen width: look in the three @media blocks at the
+ *     bottom (1100px, 860px, 600px). They come LAST on purpose: when two rules
+ *     have the same weight the later one wins, so overrides must be after the
+ *     normal rules.
+ *   - A class is not styled: class names are shared with the .tsx files.
+ *     Search the project for the name before renaming or deleting it.
+ *   - To try the red palette (spec Option B) change --accent / --accent-h /
+ *     --black. A few blue tints are typed directly instead of using the token
+ *     and must be changed too: rgba(76,141,255,...), #e9f1ff, #e4eeff, #f1f6ff
+ *     (and #4C8DFF inside components/WorkspaceMock.tsx).
+ */
+
+/* Design tokens (CSS variables). Change a value here and it changes everywhere.
+   Palette = spec Option A (blue accent, black, white). */
 :root {
-  --accent: #4C8DFF;
-  --accent-h: #3A78E8;
-  --black: #0D1015;
-  --white: #FFFFFF;
-  --off: #F6F7F9;
-  --line: #E3E5E8;
-  --mute: #5b6472;
-  --ok: #16a34a;
-  --warn: #d97706;
-  --bad: #dc2626;
-  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --accent: #4C8DFF;   /* brand blue: primary buttons, links, highlights */
+  --accent-h: #3A78E8; /* darker blue for hover states and blue text */
+  --black: #0D1015;    /* near-black: text, dark bands, announcement bar */
+  --white: #FFFFFF;    /* page background */
+  --off: #F6F7F9;      /* light grey section / card background */
+  --line: #E3E5E8;     /* 1px borders */
+  --mute: #5b6472;     /* secondary (grey) text */
+  --ok: #16a34a;       /* green: pass / success */
+  --warn: #d97706;     /* amber: review */
+  --bad: #dc2626;      /* red: fail (declared for status colours; not used by a rule yet) */
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; /* body font + fallbacks */
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; /* technical labels, prices */
 }
+/* Base reset and defaults for the whole site.
+   box-sizing: padding and borders count inside an element's width.
+   Lists, headings and paragraphs lose their default margins/bullets so every
+   gap is set deliberately by a class below. */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; font-family: var(--sans); font-size: 17px; line-height: 1.55; color: var(--black); background: var(--white); -webkit-font-smoothing: antialiased; }
@@ -20,13 +69,21 @@ button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; background: none; border: 0; padding: 0; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, h4, p { margin: 0; }
+/* Keyboard focus ring (blue outline) for links, buttons and fields. */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+/* .sr-only: hidden on screen but still read by screen readers (used for the carousel list labels). */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* .wrap: the centred page column. Max 1240px wide with 24px side padding (16px on phones, see the 600px block). */
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+/* .center: centre the text. .mono: monospace helper (not used by any component right now). */
 .center { text-align: center; }
 .mono { font-family: var(--mono); }
 
-/* type */
+/* ---------------------------------------------------------------------------
+   Typography. h1/h2 sizes are fluid (clamp(min, preferred, max)) so they scale
+   between phone and desktop. .h3 = a larger h3; .sub = grey sub-heading under a
+   title; .eyebrow = small blue uppercase label; .small and .foot = small grey text.
+   --------------------------------------------------------------------------- */
 h1 { font-size: clamp(38px, 6vw, 70px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; }
 h2 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 700; }
 h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
@@ -37,7 +94,13 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .small { font-size: 14px; color: var(--mute); }
 .foot { font-size: 13px; color: var(--mute); margin-top: 14px; }
 
-/* buttons */
+/* ---------------------------------------------------------------------------
+   Buttons and small controls.
+   .btn = base pill button (48px high). Add .btn-primary (blue) or .btn-secondary
+   (white, grey border). Sizes: .btn-sm (38px), .btn-lg (56px).
+   .link-arrow = blue text link with an arrow. .icon-btn = round icon-only button.
+   .tag = small grey label such as "Coming soon"; .tag-accent = blue version.
+   --------------------------------------------------------------------------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 9999px; font-weight: 600; font-size: 16px; border: 1px solid transparent; transition: background .18s, border-color .18s, transform .18s; white-space: nowrap; }
 .btn-sm { height: 38px; padding: 0 18px; font-size: 14.5px; }
 .btn-lg { height: 56px; padding: 0 32px; font-size: 17px; }
@@ -52,20 +115,38 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .tag { font-style: normal; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 9999px; background: #eceef1; color: var(--mute); margin-left: 8px; white-space: nowrap; }
 .tag-accent { background: #e4eeff; color: var(--accent-h); }
 
-/* logo */
+/* ---------------------------------------------------------------------------
+   Logo (the <Logo /> component in components/Icon.tsx): a rounded square with a
+   "B" plus the word. The square turns blue on dark bands and in the centre card
+   of the how-it-works diagram.
+   --------------------------------------------------------------------------- */
 .logo { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
 .logo-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--black); color: #fff; font-size: 16px; }
+/* blue logo square on dark bands and in the how-it-works centre card */
 .dark .logo-mark, .hiw-mark .logo-mark { background: var(--accent); }
 
-/* announcement */
+/* ---------------------------------------------------------------------------
+   Announcement bar (AnnouncementBar in components/Header.tsx). Black strip with
+   the dismiss button on the right. .ann-long (full sentence) shows on wide
+   screens and .ann-short on phones (see the 600px block).
+   --------------------------------------------------------------------------- */
 .ann { position: relative; display: flex; justify-content: center; align-items: center; min-height: 36px; background: var(--black); color: #fff; font-size: 14px; padding: 0 48px; text-align: center; }
 .ann a { color: var(--accent); font-weight: 600; margin-left: 4px; }
 .ann button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #aeb5c2; display: grid; }
 .ann-short { display: none; }
 
-/* header */
+/* ---------------------------------------------------------------------------
+   Site header (SiteHeader in components/Header.tsx).
+   .hdr = sticky bar; .hdr-in = inner row (72px tall, 56px once scrolled, which
+   adds the .hdr-s class); .nav = desktop menu; .hdr-r = search / language /
+   log in / buttons; .burger = mobile menu button (hidden on desktop).
+   .mega = the desktop drop-down panel, full width, directly under the header;
+   .mega-spot / .mega-wait = the spotlight card or the waitlist form inside it.
+   @keyframes fade = short fade-in used by the mega-menu and the search overlay.
+   --------------------------------------------------------------------------- */
 .hdr { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .hdr-in { max-width: 1400px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; gap: 28px; transition: height .2s; }
+/* .hdr-s is added by Header.tsx after scrolling 24px: the header gets shorter */
 .hdr-s .hdr-in { height: 56px; }
 .nav { display: flex; align-items: center; gap: 4px; }
 .nav-i { position: relative; }
@@ -74,6 +155,7 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .hdr-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .loc { font-size: 13px; color: var(--mute); padding: 0 10px; }
 .burger { display: none; margin-left: auto; }
+/* the desktop drop-down: fixed to the full width; margin-top lines it up under the 72px header (8px when the header is shrunk) */
 .mega { position: fixed; left: 0; right: 0; top: auto; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 20px 40px rgba(13,16,21,.08); padding: 32px 0; margin-top: 16px; animation: fade .18s ease; }
 .hdr-s .mega { margin-top: 8px; }
 .mega-in { max-width: 1240px; margin: 0 auto; padding: 0 24px; display: flex; gap: 56px; }
@@ -81,12 +163,14 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .mega-col h4 { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--mute); margin-bottom: 10px; font-weight: 500; }
 .mega-col a { display: flex; align-items: center; padding: 6px 0; font-size: 15px; }
 .mega-col a:hover { color: var(--accent-h); }
+/* right-hand card inside a mega-menu: spotlight link or waitlist form */
 .mega-spot, .mega-wait { margin-left: auto; width: 300px; background: var(--off); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px; align-self: flex-start; }
 .mega-spot span { color: var(--mute); font-size: 14px; }
 .mega-spot svg { color: var(--accent-h); }
 .mega-wait input, .mega-wait select { height: 40px; border: 1px solid var(--line); border-radius: 9999px; padding: 0 14px; background: #fff; }
 @keyframes fade { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
+/* Search overlay (full screen): .overlay, .overlay-in, .search-row (big input with underline), .chips / .chip (suggestion pills). */
 .overlay { position: fixed; inset: 0; z-index: 80; background: #fff; overflow: auto; animation: fade .18s ease; }
 .overlay-in { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
 .search-row { display: flex; align-items: center; gap: 14px; border-bottom: 2px solid var(--black); padding-bottom: 12px; margin-bottom: 32px; }
@@ -96,19 +180,31 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .chip { padding: 8px 16px; border: 1px solid var(--line); border-radius: 9999px; font-size: 15px; }
 .chip:hover { border-color: var(--black); }
 
+/* Mobile menu (full-screen sheet): .sheet-top (logo + close), .sheet-body (scrolls),
+   accordion rows .acc / .acc-l / .acc-p, and .sheet-cta (the two buttons pinned at the bottom). */
 .sheet { position: fixed; inset: 0; z-index: 90; background: #fff; display: flex; flex-direction: column; }
 .sheet-top { display: flex; justify-content: space-between; align-items: center; height: 60px; padding: 0 16px 0 20px; border-bottom: 1px solid var(--line); }
 .sheet-body { flex: 1; overflow: auto; padding: 8px 20px; }
+/* one mobile menu row: a dropdown button (.acc) or a plain link (.acc-l) */
 .acc > button, .acc-l { display: flex; width: 100%; justify-content: space-between; align-items: center; padding: 16px 0; font-size: 18px; font-weight: 600; border-bottom: 1px solid var(--line); }
 .acc-p { display: flex; flex-direction: column; padding: 8px 0 8px 12px; }
 .acc-p a { padding: 10px 0; color: var(--mute); }
 .sheet-cta { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 24px; border-top: 1px solid var(--line); }
 
-/* hero */
+/* ---------------------------------------------------------------------------
+   Hero (components/Hero.tsx).
+   .hero = section with a light-to-white gradient; .hero-top = centred text stack;
+   .pill-eyebrow, .lede = intro text; .capture = the pill-shaped email form (also
+   used by the newsletter through .capture-sm); .trust-line = small grey line.
+   .preview = the clickable preview link, .preview-frame = dark rounded frame,
+   .mock = the workspace SVG (components/WorkspaceMock.tsx), .dots = progress
+   dots, .caption = text under the frame.
+   --------------------------------------------------------------------------- */
 .hero { padding: 72px 0 56px; background: linear-gradient(180deg, var(--off) 0%, #fff 70%); text-align: center; overflow: hidden; }
 .hero-top { display: flex; flex-direction: column; align-items: center; gap: 22px; }
 .pill-eyebrow { display: inline-block; padding: 6px 16px; border-radius: 9999px; border: 1px solid var(--line); background: #fff; font-size: 14px; font-weight: 500; }
 .lede { max-width: 700px; font-size: 19px; color: var(--mute); }
+/* pill-shaped email form: container draws the border and focus ring, the input inside is borderless */
 .capture { display: flex; gap: 8px; padding: 6px; border: 1px solid #cfd3d9; border-radius: 9999px; background: #fff; width: min(520px, 100%); }
 .capture input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 0 18px; background: none; }
 .capture:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(76,141,255,.2); }
@@ -117,6 +213,7 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .preview { display: block; margin: 56px auto 0; max-width: 1200px; position: relative; }
 .preview-frame { border-radius: 16px; overflow: hidden; background: #0b0e13; box-shadow: 0 40px 80px -20px rgba(13,16,21,.35), 0 0 0 1px rgba(13,16,21,.9); transition: transform .3s; }
 .preview:hover .preview-frame { transform: translateY(-4px); }
+/* the workspace SVG scales to the width of its container */
 .mock { display: block; width: 100%; height: auto; font-family: var(--sans); }
 .mock text { font-family: var(--sans); }
 .dots { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; gap: 6px; }
@@ -124,7 +221,12 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .dots span.on { background: #fff; width: 18px; }
 .caption { margin-top: 14px; font-size: 14px; color: var(--mute); }
 
-/* sections */
+/* ---------------------------------------------------------------------------
+   Section building blocks used by app/(marketing)/page.tsx.
+   .sec = normal section (96px top/bottom padding); .sec-tight = 48px; .sec-alt =
+   light grey background; .sec-head = space under a title; .row = title on the
+   left and a link on the right (wraps on small screens).
+   --------------------------------------------------------------------------- */
 .sec { padding: 96px 0; }
 .sec-tight { padding: 48px 0; }
 .sec-alt { background: var(--off); }
@@ -132,6 +234,8 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .sec-head.center { display: flex; flex-direction: column; align-items: center; }
 .row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
+/* Discipline tiles (homepage Block 3): .tiles scrolls sideways if the tiles do not fit; .tile = one card;
+   .tile-ico = the blue icon square (also reused in how-it-works and the learn cards); .tile-name = label. */
 .tiles { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: thin; }
 .tile { width: 184px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; height: 132px; flex: none; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; text-align: center; transition: border-color .18s, transform .18s; }
 .tile:hover { border-color: var(--black); transform: translateY(-2px); }
@@ -139,13 +243,20 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .tile-name { font-weight: 600; font-size: 15px; }
 .tile .tag { margin: -4px 0 0; }
 
-/* carousel */
+/* ---------------------------------------------------------------------------
+   Feature carousel (components/Carousel.tsx).
+   .car-track = sideways scrolling row that snaps card by card; .fcard = one card
+   (304px wide, 272px on phones); .fcard-img = dark thumbnail area; .fcard-body =
+   text and buttons; .car-ctl / .round = previous/next buttons.
+   KEEP IN SYNC: the scroll step 324 in Carousel.tsx = card width 304 + gap 20.
+   --------------------------------------------------------------------------- */
 .car { position: relative; }
 .car-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 4px 16px; scrollbar-width: none; }
 .car-track::-webkit-scrollbar { display: none; }
 .fcard { flex: 0 0 304px; height: 440px; scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; transition: box-shadow .2s, transform .2s; }
 .fcard:hover { box-shadow: 0 16px 36px rgba(13,16,21,.1); transform: translateY(-3px); }
 .fcard-img { height: 150px; background: #0b0e13; overflow: hidden; display: grid; align-items: center; }
+/* thumbnail SVG fills the 150px image area */
 .fcard-img .mock { width: 100%; height: 100%; object-fit: cover; }
 .fcard-body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; flex: 1; position: relative; }
 .fcard-ico { position: absolute; top: -20px; left: 18px; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: #fff; border: 1px solid var(--line); color: var(--accent-h); }
@@ -156,7 +267,14 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .round { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 9999px; border: 1px solid #cfd3d9; background: #fff; }
 .round:hover { border-color: var(--black); }
 
-/* how it works */
+/* ---------------------------------------------------------------------------
+   How-it-works diagram (homepage Block 5).
+   .hiw = 2 x 2 grid with a wide 220px gap down the middle; .hiw-mark = the centre
+   logo card, absolutely centred in that gap; .hiw-card = one of the four input
+   cards; .hiw-lines = SVG overlay with dashed connector lines.
+   At 860px and below it becomes one column, the mark moves to the top and the
+   lines are hidden.
+   --------------------------------------------------------------------------- */
 .hiw { position: relative; max-width: 920px; margin: 48px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 28px 220px; align-items: stretch; }
 .hiw-mark { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 2; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 22px 26px; box-shadow: 0 10px 30px rgba(13,16,21,.08); }
 .hiw-mark .logo { font-size: 20px; }
@@ -166,12 +284,20 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .hiw-lines { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 .hiw-lines path { fill: none; stroke: #b9c4d8; stroke-width: 1.2; stroke-dasharray: 4 4; vector-effect: non-scaling-stroke; }
 
-/* AI cards */
+/* ---------------------------------------------------------------------------
+   AI section (homepage Block 6) and shared card styles.
+   .duo = two-column grid (also used by the learn cards); .card = white rounded
+   card; .chat / .bub = sample conversation; .council / .council-row / .vote =
+   Agent Council vote rows (.vote-ok green, .vote-warn amber, .vote-bad red);
+   .byo / .logos = "Bring your own AI" strip.
+   --------------------------------------------------------------------------- */
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 10px; }
+/* cards stay white on the grey .sec-alt background */
 .sec-alt .card { background: #fff; }
 .card h3 { font-size: 24px; display: flex; align-items: center; flex-wrap: wrap; }
 .card-sub { font-family: var(--mono); font-size: 13px; color: var(--accent-h); }
+/* body text in cards is grey, except the small blue subtitle and the council question */
 .card > p:not(.card-sub):not(.council-q) { color: var(--mute); }
 .chat { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; background: var(--off); border-radius: 12px; padding: 16px; }
 .bub { padding: 12px 16px; border-radius: 14px; font-size: 15px; max-width: 92%; }
@@ -191,19 +317,30 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .logos li { padding: 8px 18px; border-radius: 9999px; background: var(--off); border: 1px solid var(--line); font-weight: 600; font-size: 15px; }
 
-/* spotlights */
+/* ---------------------------------------------------------------------------
+   "Built for" cards (homepage Block 7). .trio = three-column grid; .spot = one
+   card; .spot-img = picture area drawn purely with CSS gradients, in three
+   variants .spot-a / .spot-b / .spot-c (grid, diagonal lines, rings).
+   --------------------------------------------------------------------------- */
 .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .spot { background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; gap: 8px; padding-bottom: 24px; transition: box-shadow .2s, transform .2s; }
 .spot:hover { box-shadow: 0 16px 36px rgba(13,16,21,.1); transform: translateY(-3px); }
 .spot h3, .spot p, .spot .link-arrow { padding: 0 24px; }
 .spot p { color: var(--mute); font-size: 16px; flex: 1; }
 .spot-img { height: 200px; margin-bottom: 12px; background: linear-gradient(135deg, #0d1015, #1c2736); position: relative; }
+/* overlay layer that carries the gradient picture; the variants below set its background */
 .spot-img::after { content: ""; position: absolute; inset: 0; opacity: .9; }
 .spot-a .spot-img::after { background: radial-gradient(circle at 70% 30%, rgba(76,141,255,.55), transparent 55%), repeating-linear-gradient(0deg, transparent 0 23px, rgba(255,255,255,.06) 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, rgba(255,255,255,.06) 23px 24px); }
 .spot-b .spot-img::after { background: radial-gradient(circle at 30% 70%, rgba(76,141,255,.5), transparent 55%), repeating-linear-gradient(45deg, transparent 0 18px, rgba(255,255,255,.06) 18px 19px); }
 .spot-c .spot-img::after { background: radial-gradient(circle at 50% 50%, rgba(76,141,255,.45), transparent 60%), repeating-radial-gradient(circle at 50% 50%, transparent 0 22px, rgba(255,255,255,.07) 22px 23px); }
 
-/* dark bands */
+/* ---------------------------------------------------------------------------
+   Dark full-width bands (Block 8 showcase and Block 15 final call to action).
+   .band = vertical padding; .dark = black background, white text (also restyles
+   .btn-secondary for dark backgrounds); .tabs = showcase tab buttons;
+   .show-grid = bullets on the left + image on the right; .callouts = the bullets;
+   .show-img = the image frame.
+   --------------------------------------------------------------------------- */
 .band { padding: 96px 0; }
 .dark { background: var(--black); color: #fff; }
 .dark .btn-secondary { background: transparent; color: #fff; border-color: rgba(255,255,255,.35); }
@@ -218,7 +355,11 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .callouts svg { flex: none; color: var(--accent); margin-top: 3px; }
 .show-img { border-radius: 16px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 30px 60px rgba(0,0,0,.5); }
 
-/* steps */
+/* ---------------------------------------------------------------------------
+   "AI-assisted. Engineer-approved." steps (homepage Block 9). .steps = row of three
+   cards with arrows between; .num = numbered circle; .arrow-b = the arrow
+   between cards (rotated downward on small screens); .links2 = the two links.
+   --------------------------------------------------------------------------- */
 .steps { display: flex; align-items: stretch; justify-content: center; gap: 12px; margin: 48px 0 36px; }
 .steps li:not(.arrow-b) { flex: 1; max-width: 320px; background: var(--off); border-radius: 16px; padding: 28px; text-align: left; }
 .steps .num { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9999px; background: var(--black); color: #fff; font-family: var(--mono); font-size: 15px; margin-bottom: 14px; }
@@ -227,7 +368,12 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .arrow-b { align-self: center; color: var(--accent); }
 .links2 { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
 
-/* compare */
+/* ---------------------------------------------------------------------------
+   Compare table (components/Compare.tsx, homepage Block 10).
+   .pills = competitor buttons; .table-wrap = box that scrolls sideways on small
+   screens so the page itself does not; .cmp = the table (min width 620px);
+   .us = highlighted BuildSync column; .verify = the grey "[verify]" placeholder.
+   --------------------------------------------------------------------------- */
 .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
 .pills button { padding: 9px 20px; border-radius: 9999px; border: 1px solid #cfd3d9; background: #fff; font-weight: 500; font-size: 15px; }
 .pills button.on { background: var(--black); color: #fff; border-color: var(--black); }
@@ -241,13 +387,20 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .cmp td.us svg { color: var(--ok); vertical-align: -3px; margin-right: 4px; }
 .cmp .verify { font-family: var(--mono); color: #9aa2ae; }
 
-/* stats */
+/* ---------------------------------------------------------------------------
+   Pilot-program stat cards (homepage Block 11): .stats = 3 cards (1 column on phones).
+   --------------------------------------------------------------------------- */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px; margin: 0 auto 32px; }
 .stats li { border: 1px solid var(--line); border-radius: 12px; padding: 28px 16px; display: flex; flex-direction: column; gap: 4px; }
 .stats strong { font-size: 34px; letter-spacing: -0.02em; font-weight: 700; }
 .stats span { color: var(--mute); font-size: 15px; }
 
-/* pricing */
+/* ---------------------------------------------------------------------------
+   Pricing (components/Pricing.tsx, homepage Block 12).
+   .toggle = Monthly/Yearly switch; .plans = card grid (4 columns, 2 at 1100px
+   and below, 1 at 600px and below); .plan = one card; .plan.rec = highlighted
+   "Recommended" card with .rec-tag; .price = big price line (monospace).
+   --------------------------------------------------------------------------- */
 .toggle { display: flex; align-items: center; justify-content: center; gap: 4px; width: max-content; max-width: 100%; margin: 0 auto 36px; padding: 4px; border: 1px solid #cfd3d9; border-radius: 9999px; background: #fff; }
 .toggle button { padding: 8px 22px; border-radius: 9999px; font-weight: 600; font-size: 15px; }
 .toggle button.on { background: var(--black); color: #fff; }
@@ -263,9 +416,13 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .plan li { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 8px; }
 .plan li svg { flex: none; color: var(--accent-h); margin-top: 4px; }
 .plan li .tag { margin: 0; }
+/* spacing above the 'Compare every feature' link (scoped to the pricing section by its id) */
 #pricing .center { margin-top: 28px; }
 
-/* learn / news */
+/* ---------------------------------------------------------------------------
+   Learn and education cards (Block 13, .learn adds hover lift to .card) and the
+   newsletter box (components/Newsletter.tsx, Block 14, .news).
+   --------------------------------------------------------------------------- */
 .learn { transition: box-shadow .2s, transform .2s; }
 .learn:hover { box-shadow: 0 16px 36px rgba(13,16,21,.1); transform: translateY(-3px); }
 .learn > p { color: var(--mute); }
@@ -274,12 +431,19 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .news p { color: var(--mute); margin-top: 4px; }
 .news .ok { color: var(--ok); font-weight: 600; }
 
-/* cta */
+/* ---------------------------------------------------------------------------
+   Final call-to-action band (homepage Block 15): .cta adds a soft blue glow on top
+   of .dark; .cta-btns = the two buttons.
+   --------------------------------------------------------------------------- */
 .cta { background: radial-gradient(ellipse at 50% 120%, rgba(76,141,255,.35), transparent 60%), var(--black); }
 .cta h2 { max-width: 760px; margin: 0 auto; font-size: clamp(30px, 4.4vw, 52px); }
 .cta-btns { display: flex; justify-content: center; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
 
-/* footer */
+/* ---------------------------------------------------------------------------
+   Footer (components/Footer.tsx, Block 16). .foot-wrap = footer area; .foot-grid =
+   5 columns (brand + 4 link columns); .socials = round icon links; .legal = bottom
+   row with legal links, region label and copyright.
+   --------------------------------------------------------------------------- */
 .foot-wrap { border-top: 1px solid var(--line); padding-top: 64px; background: #fff; }
 .foot-grid { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 32px; padding-bottom: 48px; }
 .foot-brand p { margin: 14px 0 18px; color: var(--mute); font-size: 15px; max-width: 220px; }
@@ -295,14 +459,32 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .legal a:hover { color: var(--black); text-decoration: underline; }
 .legal .loc { margin-left: auto; padding: 0; }
 
-/* scroll reveal-lite */
+/* ---------------------------------------------------------------------------
+   Motion preferences.
+   First block: for visitors who have NOT asked for reduced motion, every
+   .sec / .band fades and rises in over half a second when the page loads
+   (it plays on load, not on scroll).
+   Second block: for visitors who HAVE asked for reduced motion (an operating
+   system accessibility setting) all transitions, animations and smooth scrolling
+   are switched off. The JavaScript in Hero.tsx also respects this setting.
+   --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
   .sec, .band { animation: rise .5s ease both; }
   @keyframes rise { from { opacity: .0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
 
-/* responsive */
+/* ---------------------------------------------------------------------------
+   Responsive rules (everything here overrides the rules above, so it stays last).
+     max-width 1100px  desktop menu becomes the hamburger; pricing and footer
+                       grids go to 2 columns
+     max-width  860px  two- and three-column layouts become one column; steps,
+                       how-it-works and the showcase restack; smaller padding
+     max-width  600px  phone tweaks: smaller text, 16px page margins, short
+                       announcement text, stacked email form, narrower cards
+   Spec test widths: 1440 / 1024 / 768 / 390 (spec section 7).
+   --------------------------------------------------------------------------- */
+/* tablets and small laptops: switch to the hamburger menu, 2-column grids */
 @media (max-width: 1100px) {
   .nav, .hdr-r .nav-l, .hdr-r .loc, .hdr-r .btn-secondary { display: none; }
   .hdr-r { margin-left: auto; }
@@ -311,6 +493,7 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
   .foot-grid { grid-template-columns: repeat(2, 1fr); }
   .foot-brand { grid-column: 1 / -1; }
 }
+/* large phones and small tablets: single-column layouts */
 @media (max-width: 860px) {
   .duo, .trio, .show-grid { grid-template-columns: 1fr; }
   .steps { flex-direction: column; align-items: center; }
@@ -322,6 +505,7 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
   .callouts { order: 2; }
   .sec, .band { padding: 64px 0; }
 }
+/* phones */
 @media (max-width: 600px) {
   body { font-size: 16px; }
   .wrap { padding: 0 16px; }

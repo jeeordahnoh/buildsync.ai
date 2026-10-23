@@ -1,12 +1,59 @@
-// Single source for homepage content. Prices are not final: every price slot
-// reads from PRICES so real numbers drop in without layout changes.
+/**
+ * BuildSync AI · lib/site.ts
+ *
+ * Author:    Giordano Bertin-Maurice
+ * Copyright: © 2026 Giordano Bertin-Maurice. All rights reserved.
+ *
+ * WHAT IT DOES
+ *   Holds the plain data (constants) that the homepage renders: navigation
+ *   menus, discipline tiles, feature cards, prices and the compare-table rows.
+ *   Pure data. No React, no side effects, nothing is fetched.
+ *
+ * WHAT IT IS FOR
+ *   One single place to change wording, links and prices without touching any
+ *   layout code. Follows the site spec: header mega-menus (spec section 2.2),
+ *   and homepage Blocks 3, 4, 10 and 12.
+ *
+ * USED BY
+ *   NAV                         -> components/Header.tsx
+ *   DISCIPLINES                 -> app/(marketing)/page.tsx (Block 3 tiles)
+ *   FEATURES                    -> components/Carousel.tsx (Block 4 cards)
+ *   COMPETITORS, COMPARE_ROWS   -> components/Compare.tsx (Block 10 table)
+ *   PRICES                      -> components/Pricing.tsx (Block 12 cards)
+ *
+ * IF SOMETHING BREAKS
+ *   - A link goes to a 404: only "/" exists so far. Every other href here is
+ *     a planned page from the spec (section 1, site map) that is not built yet.
+ *   - An icon shows up as a cube: the `icon` name is not a key of PATHS in
+ *     components/Icon.tsx (unknown names fall back to the cube icon).
+ *   - A card thumbnail looks wrong: `view` must be one of the MockView names in
+ *     components/WorkspaceMock.tsx.
+ *   - NAV and FEATURES are `as const` (read-only literal types). Their
+ *     consumers cast them (`as any` in Header.tsx, `as MockView` in
+ *     Carousel.tsx), so a change to their shape will NOT be caught by
+ *     TypeScript. Re-check those two files by eye after changing a shape.
+ */
 
+// Prices are not final. Every price slot on the site reads from here so real
+// numbers drop in later without layout changes. Replace "{{PRICE}}" with the
+// real text (for example "$12"). Shape: { plan: { monthly, yearly } }.
+// Pricing.tsx picks "monthly" or "yearly" from the Monthly/Yearly toggle.
+// "Student Free" ($0) and "Government" (annual contract) are literal text in
+// Pricing.tsx because they never change with the toggle.
 export const PRICES = {
   studentPro: { monthly: "{{PRICE}}", yearly: "{{PRICE}}" },
   engineer: { monthly: "{{PRICE}}", yearly: "{{PRICE}}" },
 };
 
+// Header navigation (spec section 2.2).
+//  - An entry with `cols` is a dropdown: mega-menu on desktop, accordion in the
+//    mobile menu. Each column has a `title` and a list of `links`.
+//  - An entry with only `href` is a plain link (Compare, Pricing).
+//  - `spotlight` is the highlighted card in the right of a mega-menu.
+//  - `waitlist: true` shows the waitlist form in the mega-menu instead.
+//  - `soon: true` on a link adds a grey "Coming soon" tag.
 export const NAV = [
+  // Product: workspace links, the 8 feature pages, and a connectors spotlight.
   {
     label: "Product",
     cols: [
@@ -38,6 +85,7 @@ export const NAV = [
       href: "/connectors",
     },
   },
+  // Solutions: the three audiences, four use cases, and the government pilot.
   {
     label: "Solutions",
     cols: [
@@ -65,6 +113,8 @@ export const NAV = [
       href: "/government",
     },
   },
+  // Disciplines: Civil is live, the rest are "Coming soon". Right side of the
+  // menu is the waitlist form (`waitlist: true`) instead of a spotlight card.
   {
     label: "Disciplines",
     cols: [
@@ -81,8 +131,10 @@ export const NAV = [
     ],
     waitlist: true,
   },
+  // Plain links (no dropdown).
   { label: "Compare", href: "/compare" },
   { label: "Pricing", href: "/pricing" },
+  // Learn: tutorials/docs/webinars/blog, education + community, demo spotlight.
   {
     label: "Learn",
     cols: [
@@ -111,6 +163,9 @@ export const NAV = [
   },
 ] as const;
 
+// Tiles in "Explore BuildSync by discipline" (homepage Block 3).
+// `icon` = key in components/Icon.tsx. `live: true` hides the "Coming soon"
+// tag (only Civil and Government & municipal are live).
 export const DISCIPLINES = [
   { name: "Civil", icon: "civil", href: "/disciplines/civil", live: true },
   { name: "Government & municipal", icon: "gov", href: "/government", live: true },
@@ -120,6 +175,11 @@ export const DISCIPLINES = [
   { name: "Aviation", icon: "aviation", href: "/disciplines/aviation" },
 ];
 
+// Cards in the "What you can do in BuildSync" carousel (homepage Block 4).
+//   name  card title                    icon  key in components/Icon.tsx
+//   view  which WorkspaceMock state is  line  the one-line description
+//         drawn as the card thumbnail   href  "Explore feature" button target
+//   demo  "Try in demo" deep link (opens the demo workspace on that panel)
 export const FEATURES = [
   { name: "Code Compliance", icon: "shield", view: "compliance", line: "Pass / review / fail against your local code, with the section cited and a fix", href: "/features/compliance", demo: "/demo?panel=compliance" },
   { name: "Scheduling & Time-Window Queries", icon: "calendar", view: "timeline", line: "Ask \"first 3 months\" and see what's built, spent and on site", href: "/features/scheduling", demo: "/demo?timeline=3mo" },
@@ -131,6 +191,11 @@ export const FEATURES = [
   { name: "AI Connectors", icon: "plug", view: "connectors", line: "Use Claude, ChatGPT, Kimi or your own model inside BuildSync", href: "/connectors", demo: "/connectors" },
 ] as const;
 
+// Compare table (homepage Block 10). COMPETITORS are the selector pills.
+// COMPARE_ROWS are the feature rows; BuildSync is "Included" on every row.
+// The competitor column intentionally shows "[verify]" (see Compare.tsx):
+// do not publish claims about a competitor until each cell has been checked
+// against that vendor's public website.
 export const COMPETITORS = ["Primavera P6", "AutoCAD / Civil 3D", "UpCodes", "Procore"] as const;
 
 export const COMPARE_ROWS = [

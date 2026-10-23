@@ -1,3 +1,38 @@
+/**
+ * BuildSync AI · components/Icon.tsx
+ *
+ * Author:    Giordano Bertin-Maurice
+ * Copyright: © 2026 Giordano Bertin-Maurice. All rights reserved.
+ *
+ * WHAT IT DOES
+ *   Exports two small building blocks:
+ *     - Icon: draws a line icon (inline SVG) chosen by name from the PATHS map.
+ *     - Logo: the BuildSync mark (a "B" square) plus the "BuildSync" wordmark.
+ *
+ * WHAT IT IS FOR
+ *   A tiny built-in icon set so the site needs no icon library. All icons share
+ *   one style (24x24 grid, 1.6 stroke, round ends) and take their colour from
+ *   the surrounding text colour (stroke="currentColor").
+ *
+ * USED BY
+ *   Almost every component: Header, Hero, Carousel, Showcase, Compare, Pricing,
+ *   Footer and app/(marketing)/page.tsx. Icon names come from lib/site.ts.
+ *
+ * IF SOMETHING BREAKS
+ *   - An icon renders as a cube: the name is misspelled or missing from PATHS
+ *     (unknown names fall back to PATHS.cube on purpose).
+ *   - To add an icon: add a new key to PATHS using 24x24 coordinates.
+ *   - Logo styling lives in app/globals.css under "logo" (.logo, .logo-mark).
+ *     `.logo-word` has no CSS rule; the wordmark inherits the .logo styles.
+ */
+
+// Icon drawings, keyed by the name used in <Icon name="..." />.
+// Each value is one or more SVG shapes inside a 24x24 box. Groups:
+//   discipline icons ... civil, gov, electrical, mechanical, automotive, aviation
+//   feature icons ..... shield, calendar, cost, wind, cube, spark, sun, plug
+//   interface icons ... search, arrow, left, right, close, menu, chev, check
+//   other ............. book, grad, globe, user
+//   social icons ...... ig (Instagram), x, in (LinkedIn), mail
 const PATHS: Record<string, React.ReactNode> = {
   civil: <><path d="M3 20h18M5 20V9l7-5 7 5v11" /><path d="M9 20v-6h6v6" /></>,
   gov: <><path d="M3 9l9-5 9 5M5 9v9M9 9v9M15 9v9M19 9v9M3 20h18" /></>,
@@ -31,6 +66,14 @@ const PATHS: Record<string, React.ReactNode> = {
   user: <><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" /></>,
 };
 
+/**
+ * Draws one icon.
+ * @param name       key of PATHS (falls back to the cube icon if unknown)
+ * @param size       width and height in pixels (default 20)
+ * @param className  optional extra CSS class
+ * The SVG is hidden from screen readers (aria-hidden): icons are decoration,
+ * the text or aria-label next to them carries the meaning.
+ */
 export function Icon({ name, size = 20, className }: { name: string; size?: number; className?: string }) {
   return (
     <svg
@@ -50,6 +93,12 @@ export function Icon({ name, size = 20, className }: { name: string; size?: numb
   );
 }
 
+/**
+ * The BuildSync logo: a rounded square containing "B", then the word
+ * "BuildSync". Colours switch automatically on dark bands and in the
+ * how-it-works centre card (see `.dark .logo-mark` in app/globals.css).
+ * @param className  optional extra CSS class
+ */
 export function Logo({ className }: { className?: string }) {
   return (
     <span className={`logo ${className ?? ""}`}>

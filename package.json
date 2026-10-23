@@ -1,6 +1,9 @@
 {
   "name": "buildsync-ai",
   "version": "0.1.0",
+  "description": "BuildSync AI marketing website (homepage): Next.js App Router, TypeScript, plain CSS.",
+  "author": "Giordano Bertin-Maurice",
+  "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "dev": "next dev",
