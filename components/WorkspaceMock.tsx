@@ -228,7 +228,7 @@ function Panel({ view }: { view: MockView }) {
  * The whole fake workspace.
  * @param view  which screen to draw (default "compliance"), see MockView
  * @param chip  optional caption pill drawn top-left of the viewport, for
- *              example "① Compliance check" (Hero.tsx uses this)
+ *              example "① Compliance Check" (Hero.tsx uses this)
  * @param crop  when true, zoom the SVG viewBox to the middle of the scene so it
  *              works as a small card thumbnail (Carousel.tsx uses this)
  * Zones, top to bottom / left to right (all in the 1200 x 680 box):

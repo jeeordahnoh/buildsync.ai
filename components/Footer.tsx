@@ -9,7 +9,7 @@
  *   (homepage Block 16):
  *     - brand column: logo, tagline, four social icons
  *     - four link columns: Product, Solutions, Company, Support
- *     - bottom row: Privacy, Terms, AI Risk Disclosure, Cookie preferences,
+ *     - bottom row: Privacy, Terms, AI Risk Disclosure, Cookie Preferences,
  *       the "EN · US" label and the visible copyright line
  *
  * WHAT IT IS FOR
@@ -24,7 +24,7 @@
  * IF SOMETHING BREAKS
  *   - To change footer links edit COLS below. Each entry is [label, href].
  *   - Most destination pages are not built yet (404).
- *   - The four social links and "Cookie preferences" are placeholders
+ *   - The four social links and "Cookie Preferences" are placeholders
  *     (href="#"). Put the real social profile URLs and the cookie settings
  *     action in when they exist.
  *   - The visible line "© 2026 BuildSync AI. All rights reserved." is public
@@ -38,10 +38,10 @@ import { Icon, Logo } from "./Icon";
 
 // The four link columns: t = column title, l = list of [label, href].
 const COLS = [
-  { t: "Product", l: [["Workspace tour", "/product"], ["Features", "/product#features"], ["Connectors", "/connectors"], ["Compare", "/compare"], ["Pricing", "/pricing"], ["Try the demo", "/demo"]] },
-  { t: "Solutions", l: [["Engineers", "/solutions/engineers"], ["Students", "/solutions/students"], ["Governments", "/solutions/government"], ["Disciplines", "/disciplines"], ["Pilot program", "/government"]] },
-  { t: "Company", l: [["About", "/company/about"], ["Careers", "/company/careers"], ["Newsroom", "/blog"], ["Trust center", "/trust"], ["Contact us", "/contact"]] },
-  { t: "Support", l: [["Docs", "/learn"], ["Contact support", "/contact"], ["Product status", "/status"], ["Community", "/learn#community"], ["Education support", "/education"]] },
+  { t: "Product", l: [["Workspace Tour", "/product"], ["Features", "/product#features"], ["Connectors", "/connectors"], ["Compare", "/compare"], ["Pricing", "/pricing"], ["Try the Demo", "/demo"]] },
+  { t: "Solutions", l: [["Engineers", "/solutions/engineers"], ["Students", "/solutions/students"], ["Governments", "/solutions/government"], ["Disciplines", "/disciplines"], ["Pilot Program", "/government"]] },
+  { t: "Company", l: [["About", "/company/about"], ["Careers", "/company/careers"], ["Newsroom", "/blog"], ["Trust Center", "/trust"], ["Contact Us", "/contact"]] },
+  { t: "Support", l: [["Docs", "/learn"], ["Contact Support", "/contact"], ["Product Status", "/status"], ["Community", "/learn#community"], ["Education Support", "/education"]] },
 ];
 
 /** The site footer. */
@@ -52,7 +52,7 @@ export function SiteFooter() {
         {/* brand column: logo, tagline, social icons (placeholder links) */}
         <div className="foot-brand">
           <Logo />
-          <p>Plans checked before they’re submitted.</p>
+          <p>Plans Checked Before They’re Submitted.</p>
           <div className="socials">
             {[["ig", "Instagram"], ["x", "X"], ["in", "LinkedIn"], ["mail", "Email"]].map(([i, n]) => (
               <a key={n} href="#" aria-label={n}><Icon name={i} size={18} /></a>
@@ -73,7 +73,7 @@ export function SiteFooter() {
           <Link href="/legal/privacy">Privacy</Link>
           <Link href="/legal/terms">Terms</Link>
           <Link href="/legal/ai-risk-disclosure">AI Risk Disclosure</Link>
-          <a href="#">Cookie preferences</a>
+          <a href="#">Cookie Preferences</a>
         </nav>
         <span className="loc">EN · US</span>
         <span>© 2026 BuildSync AI. All rights reserved.</span>

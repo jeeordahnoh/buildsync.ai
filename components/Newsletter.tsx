@@ -5,7 +5,7 @@
  * Copyright: © 2026 Giordano Bertin-Maurice. All rights reserved.
  *
  * WHAT IT DOES
- *   Exports Newsletter: the "Stay in the know" box with an email field and a
+ *   Exports Newsletter: the "Stay in the Know" box with an email field and a
  *   Subscribe button (homepage Block 14). After pressing Subscribe it replaces
  *   the form with "Thanks. You're on the list."
  *
@@ -41,7 +41,7 @@ export function Newsletter() {
   return (
     <form className="news" onSubmit={(e) => { e.preventDefault(); setDone(true); }}>
       <div>
-        <h3>Stay in the know</h3>
+        <h3>Stay in the Know</h3>
         <p>Code updates, new jurisdictions and product news. One email a month.</p>
       </div>
       {/* before submit: email field + button; after submit: thank-you message */}

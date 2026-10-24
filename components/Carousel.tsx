@@ -6,9 +6,9 @@
  *
  * WHAT IT DOES
  *   Exports FeatureCarousel: a horizontally scrolling row of 8 tall feature
- *   cards (homepage Block 4, "What you can do in BuildSync"). Each card shows a
+ *   cards (homepage Block 4, "What You Can Do in BuildSync"). Each card shows a
  *   workspace thumbnail, an icon, a title, a one-line description and two
- *   buttons ("Explore feature" and "Try in demo"). Previous/next buttons and the
+ *   buttons ("Explore Feature" and "Try in Demo"). Previous/next buttons and the
  *   left/right arrow keys scroll the row.
  *
  * WHAT IT IS FOR
@@ -91,8 +91,8 @@ export function FeatureCarousel() {
               <h3>{f.name}</h3>
               <p>{f.line}</p>
               <div className="fcard-btns">
-                <Link href={f.href} className="btn btn-primary btn-sm" data-track="feature_card_click">Explore feature</Link>
-                <Link href={f.demo} className="btn btn-secondary btn-sm">Try in demo</Link>
+                <Link href={f.href} className="btn btn-primary btn-sm" data-track="feature_card_click">Explore Feature</Link>
+                <Link href={f.demo} className="btn btn-secondary btn-sm">Try in Demo</Link>
               </div>
             </div>
           </li>

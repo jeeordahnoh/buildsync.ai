@@ -51,7 +51,7 @@ export const PRICES = {
 //  - An entry with only `href` is a plain link (Compare, Pricing).
 //  - `spotlight` is the highlighted card in the right of a mega-menu.
 //  - `waitlist: true` shows the waitlist form in the mega-menu instead.
-//  - `soon: true` on a link adds a grey "Coming soon" tag.
+//  - `soon: true` on a link adds a grey "Coming Soon" tag.
 export const NAV = [
   // Product: workspace links, the 8 feature pages, and a connectors spotlight.
   {
@@ -60,21 +60,21 @@ export const NAV = [
       {
         title: "Workspace",
         links: [
-          { label: "Tour the workspace", href: "/product" },
-          { label: "Try the demo", href: "/demo" },
-          { label: "What's new", href: "/product#whats-new" },
+          { label: "Tour the Workspace", href: "/product" },
+          { label: "Try the Demo", href: "/demo" },
+          { label: "What's New", href: "/product#whats-new" },
         ],
       },
       {
         title: "Features",
         links: [
-          { label: "Code compliance", href: "/features/compliance" },
-          { label: "Scheduling & time-window queries", href: "/features/scheduling" },
-          { label: "Cost, materials & workforce", href: "/features/cost" },
-          { label: "2D/3D site viewer", href: "/features/site-viewer" },
-          { label: "Stress test & disaster simulation", href: "/features/simulation" },
+          { label: "Code Compliance", href: "/features/compliance" },
+          { label: "Scheduling & Time-Window Queries", href: "/features/scheduling" },
+          { label: "Cost, Materials & Workforce", href: "/features/cost" },
+          { label: "2D/3D Site Viewer", href: "/features/site-viewer" },
+          { label: "Stress Test & Disaster Simulation", href: "/features/simulation" },
           { label: "Prompt-to-Plan", href: "/features/prompt-to-plan" },
-          { label: "Solar & site analysis", href: "/features/solar" },
+          { label: "Solar & Site Analysis", href: "/features/solar" },
           { label: "Plan Health Score & Agent Council", href: "/features/ai" },
         ],
       },
@@ -92,28 +92,28 @@ export const NAV = [
       {
         title: "Audiences",
         links: [
-          { label: "For engineers", href: "/solutions/engineers" },
-          { label: "For students", href: "/solutions/students" },
-          { label: "For governments", href: "/solutions/government" },
+          { label: "For Engineers", href: "/solutions/engineers" },
+          { label: "For Students", href: "/solutions/students" },
+          { label: "For Governments", href: "/solutions/government" },
         ],
       },
       {
-        title: "Use cases",
+        title: "Use Cases",
         links: [
-          { label: "Permit pre-check", href: "/solutions/government" },
-          { label: "Affordable housing", href: "/solutions/engineers" },
-          { label: "Hurricane-zone design", href: "/features/simulation" },
-          { label: "City digital twin", href: "/solutions/government" },
+          { label: "Permit Pre-Check", href: "/solutions/government" },
+          { label: "Affordable Housing", href: "/solutions/engineers" },
+          { label: "Hurricane-Zone Design", href: "/features/simulation" },
+          { label: "City Digital Twin", href: "/solutions/government" },
         ],
       },
     ],
     spotlight: {
-      title: "Government pilot program",
+      title: "Government Pilot Program",
       body: "Open BuildSync for your jurisdiction.",
       href: "/government",
     },
   },
-  // Disciplines: Civil is live, the rest are "Coming soon". Right side of the
+  // Disciplines: Civil is live, the rest are "Coming Soon". Right side of the
   // menu is the waitlist form (`waitlist: true`) instead of a spotlight card.
   {
     label: "Disciplines",
@@ -150,36 +150,36 @@ export const NAV = [
       {
         title: "Community",
         links: [
-          { label: "Education access", href: "/education" },
+          { label: "Education Access", href: "/education" },
           { label: "Community", href: "/learn#community" },
         ],
       },
     ],
     spotlight: {
-      title: "Start with the demo project",
+      title: "Start With the Demo Project",
       body: "A sample house, fully loaded.",
       href: "/demo",
     },
   },
 ] as const;
 
-// Tiles in "Explore BuildSync by discipline" (homepage Block 3).
-// `icon` = key in components/Icon.tsx. `live: true` hides the "Coming soon"
+// Tiles in "Explore BuildSync by Discipline" (homepage Block 3).
+// `icon` = key in components/Icon.tsx. `live: true` hides the "Coming Soon"
 // tag (only Civil and Government & municipal are live).
 export const DISCIPLINES = [
   { name: "Civil", icon: "civil", href: "/disciplines/civil", live: true },
-  { name: "Government & municipal", icon: "gov", href: "/government", live: true },
+  { name: "Government & Municipal", icon: "gov", href: "/government", live: true },
   { name: "Electrical", icon: "electrical", href: "/disciplines/electrical" },
   { name: "Mechanical", icon: "mechanical", href: "/disciplines/mechanical" },
   { name: "Automotive", icon: "automotive", href: "/disciplines/automotive" },
   { name: "Aviation", icon: "aviation", href: "/disciplines/aviation" },
 ];
 
-// Cards in the "What you can do in BuildSync" carousel (homepage Block 4).
+// Cards in the "What You Can Do in BuildSync" carousel (homepage Block 4).
 //   name  card title                    icon  key in components/Icon.tsx
 //   view  which WorkspaceMock state is  line  the one-line description
-//         drawn as the card thumbnail   href  "Explore feature" button target
-//   demo  "Try in demo" deep link (opens the demo workspace on that panel)
+//         drawn as the card thumbnail   href  "Explore Feature" button target
+//   demo  "Try in Demo" deep link (opens the demo workspace on that panel)
 export const FEATURES = [
   { name: "Code Compliance", icon: "shield", view: "compliance", line: "Pass / review / fail against your local code, with the section cited and a fix", href: "/features/compliance", demo: "/demo?panel=compliance" },
   { name: "Scheduling & Time-Window Queries", icon: "calendar", view: "timeline", line: "Ask \"first 3 months\" and see what's built, spent and on site", href: "/features/scheduling", demo: "/demo?timeline=3mo" },
@@ -199,11 +199,11 @@ export const FEATURES = [
 export const COMPETITORS = ["Primavera P6", "AutoCAD / Civil 3D", "UpCodes", "Procore"] as const;
 
 export const COMPARE_ROWS = [
-  "Code compliance check per jurisdiction, with sections cited",
-  "Schedule with time-window queries (built / spent / materials / crew)",
-  "Cost, materials & workforce from the model",
-  "Disaster simulation (wind, seismic, flood) on your design",
-  "2D/3D site viewer with section cut",
+  "Code Compliance Check per Jurisdiction, With Sections Cited",
+  "Schedule With Time-Window Queries (Built / Spent / Materials / Crew)",
+  "Cost, Materials & Workforce From the Model",
+  "Disaster Simulation (Wind, Seismic, Flood) on Your Design",
+  "2D/3D Site Viewer With Section Cut",
   "Prompt-to-Plan",
-  "Bring your own AI agent (Claude, ChatGPT, Kimi, MCP)",
+  "Bring Your Own AI Agent (Claude, ChatGPT, Kimi, MCP)",
 ];

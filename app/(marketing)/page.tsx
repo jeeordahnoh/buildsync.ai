@@ -12,11 +12,11 @@
  *     Block 2  hero + live preview ..... <Hero />
  *     Block 3  discipline tiles
  *     Block 4  feature carousel ........ <FeatureCarousel />
- *     Block 5  "how it works" diagram
- *     Block 6  Ask BuildSync + Agent Council + Bring your own AI
+ *     Block 5  "How It Works" diagram
+ *     Block 6  Ask BuildSync + Agent Council + Bring Your Own AI
  *     Block 7  "Built for" cards
  *     Block 8  dark product showcase ... <Showcase />
- *     Block 9  "AI-assisted. Engineer-approved." steps
+ *     Block 9  "AI-Assisted. Engineer-Approved." steps
  *     Block 10 compare table ........... <CompareTable />
  *     Block 11 pilot program
  *     Block 12 pricing ................. <Pricing />
@@ -61,13 +61,13 @@ import { DISCIPLINES } from "@/lib/site";
 // Block 5: the four inputs around the BuildSync mark.
 //   t = card title, d = description, i = icon name (see components/Icon.tsx)
 const INPUTS = [
-  { t: "The plan", d: "Drawings, DWG/PDF, or a prompt", i: "civil" },
-  { t: "The jurisdiction", d: "The code set that actually applies there", i: "gov" },
-  { t: "The site", d: "Location, topography, soil, climate, sun", i: "sun" },
-  { t: "The timeline & budget", d: "Phases, crews, materials, cost basis", i: "calendar" },
+  { t: "The Plan", d: "Drawings, DWG/PDF, or a prompt", i: "civil" },
+  { t: "The Jurisdiction", d: "The code set that actually applies there", i: "gov" },
+  { t: "The Site", d: "Location, topography, soil, climate, sun", i: "sun" },
+  { t: "The Timeline & Budget", d: "Phases, crews, materials, cost basis", i: "calendar" },
 ];
 
-// Block 6: the "Bring your own AI" row of agent names (text pills, not logos).
+// Block 6: the "Bring Your Own AI" row of agent names (text pills, not logos).
 const AGENTS = ["Claude", "ChatGPT", "Kimi", "Gemini", "Local (Ollama)", "Custom / MCP"];
 
 // Block 6: Agent Council rows: [role, vote text, vote colour].
@@ -83,9 +83,9 @@ const COUNCIL: [string, string, string][] = [
 //   t = title, d = description, h = link, c = picture style (a / b / c, see
 //   .spot-a / .spot-b / .spot-c in app/globals.css)
 const SPOTLIGHTS = [
-  { t: "For engineers", d: "Pre-check plans before submission, plan the build, and coordinate trades in one place.", h: "/solutions/engineers", c: "a" },
-  { t: "For students", d: "Learn on real projects: see how a plan becomes a schedule, budget and code result. Free to start.", h: "/solutions/students", c: "b" },
-  { t: "For governments", d: "Pre-check permits, build a city digital twin and plan emergency routes.", h: "/solutions/government", c: "c" },
+  { t: "For Engineers", d: "Pre-check plans before submission, plan the build, and coordinate trades in one place.", h: "/solutions/engineers", c: "a" },
+  { t: "For Students", d: "Learn on real projects: see how a plan becomes a schedule, budget and code result. Free to start.", h: "/solutions/students", c: "b" },
+  { t: "For Governments", d: "Pre-check permits, build a city digital twin and plan emergency routes.", h: "/solutions/government", c: "c" },
 ];
 
 /** The homepage. Sections are in the same order as the spec blocks. */
@@ -95,12 +95,12 @@ export default function Home() {
       {/* Block 2: hero (headline, email capture, live workspace preview) */}
       <Hero />
 
-      {/* Block 3: "Explore BuildSync by discipline": a row of tiles that scrolls sideways if it does not fit */}
+      {/* Block 3: "Explore BuildSync by Discipline": a row of tiles that scrolls sideways if it does not fit */}
       <section className="sec sec-tight">
         <div className="wrap">
           <div className="sec-head row">
-            <h3 className="h3">Explore BuildSync by discipline</h3>
-            <Link href="/disciplines" className="link-arrow">View all <Icon name="arrow" size={16} /></Link>
+            <h3 className="h3">Explore BuildSync by Discipline</h3>
+            <Link href="/disciplines" className="link-arrow">View All <Icon name="arrow" size={16} /></Link>
           </div>
           <ul className="tiles">
             {DISCIPLINES.map((d) => (
@@ -109,7 +109,7 @@ export default function Home() {
                   <span className="tile-ico"><Icon name={d.icon} size={26} /></span>
                   <span className="tile-name">{d.name}</span>
                   {/* only disciplines without `live: true` get the grey tag */}
-                  {!d.live && <em className="tag">Coming soon</em>}
+                  {!d.live && <em className="tag">Coming Soon</em>}
                 </Link>
               </li>
             ))}
@@ -117,26 +117,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Block 4: "What you can do in BuildSync": the 8 feature cards (scroll sideways) */}
+      {/* Block 4: "What You Can Do in BuildSync": the 8 feature cards (scroll sideways) */}
       <section className="sec" id="features">
         <div className="wrap">
           <div className="sec-head row">
-            <h2>What you can do in BuildSync</h2>
-            <Link href="/product" className="link-arrow">See every feature <Icon name="arrow" size={16} /></Link>
+            <h2>What You Can Do in BuildSync</h2>
+            <Link href="/product" className="link-arrow">See Every Feature <Icon name="arrow" size={16} /></Link>
           </div>
           <FeatureCarousel />
         </div>
       </section>
 
-      {/* Block 5: "How it works": four cards (2 x 2) with the BuildSync mark in
+      {/* Block 5: "How It Works": four cards (2 x 2) with the BuildSync mark in
           the middle and dashed connector lines drawn by the SVG overlay. On
           screens 860px wide and below the cards stack under the mark and the
           lines are hidden. (The hiw-0..hiw-3 classes are position hooks; no CSS
           uses them yet.) */}
       <section className="sec sec-alt">
         <div className="wrap center">
-          <span className="eyebrow">How it works</span>
-          <h2>One model. Four things it knows about your project.</h2>
+          <span className="eyebrow">How It Works</span>
+          <h2>One Model. Four Things It Knows About Your Project.</h2>
           <p className="sub">Every check, schedule and simulation runs on the same four inputs.</p>
           <div className="hiw">
             <div className="hiw-mark"><Logo /></div>
@@ -157,18 +157,18 @@ export default function Home() {
       </section>
 
       {/* Block 6: AI section: two cards side by side (Ask BuildSync, Agent
-          Council), then the full-width "Bring your own AI" strip */}
+          Council), then the full-width "Bring Your Own AI" strip */}
       <section className="sec">
         <div className="wrap">
           <div className="sec-head center">
-            <span className="eyebrow">AI that works the way you do</span>
-            <h2>An engineer in the command line. A council behind it.</h2>
+            <span className="eyebrow">AI That Works the Way You Do</span>
+            <h2>An Engineer in the Command Line. A Council Behind It.</h2>
           </div>
           <div className="duo">
             {/* card 1: Ask BuildSync, with one sample chat (fixed text, not live AI) */}
             <article className="card">
               <h3>Ask BuildSync</h3>
-              <p className="card-sub">Your AI engineer in the command line</p>
+              <p className="card-sub">Your AI Engineer in the Command Line</p>
               <p>Ask about your plan in plain English. BuildSync reads the model, cites the code and drafts changes for you to approve.</p>
               <div className="chat">
                 <div className="bub you"><b>You</b>Why is truss T-4 failing under a 200 mph west wind?</div>
@@ -178,8 +178,8 @@ export default function Home() {
             {/* card 2: Agent Council, one row per role with a coloured vote pill.
                 The dots fade out (opacity 1 - 0.15 x row number) to tell rows apart. */}
             <article className="card">
-              <h3>Agent Council <em className="tag tag-accent">Engineer and up</em></h3>
-              <p className="card-sub">Several AIs, one decision</p>
+              <h3>Agent Council <em className="tag tag-accent">Engineer and Up</em></h3>
+              <p className="card-sub">Several AIs, One Decision</p>
               <p>Bring a big call to the Council. Your connected agents take the roles of Structural Engineer, Cost Estimator, Code Reviewer and Project Manager, argue it out using your model, then vote.</p>
               <div className="council">
                 <p className="council-q">“Should we switch to a steel frame?”</p>
@@ -193,11 +193,11 @@ export default function Home() {
               </div>
             </article>
           </div>
-          {/* "Bring your own AI" strip */}
+          {/* "Bring Your Own AI" strip */}
           <div className="byo">
-            <h3>Bring your own AI</h3>
+            <h3>Bring Your Own AI</h3>
             <ul className="logos">{AGENTS.map((a) => <li key={a}>{a}</li>)}</ul>
-            <Link href="/connectors" className="link-arrow">See connectors <Icon name="arrow" size={16} /></Link>
+            <Link href="/connectors" className="link-arrow">See Connectors <Icon name="arrow" size={16} /></Link>
             <p className="small">Agents only propose changes. You approve every edit.</p>
           </div>
         </div>
@@ -214,7 +214,7 @@ export default function Home() {
                 <div className="spot-img" aria-hidden="true" />
                 <h3>{s.t}</h3>
                 <p>{s.d}</p>
-                <span className="link-arrow">Learn more <Icon name="arrow" size={16} /></span>
+                <span className="link-arrow">Learn More <Icon name="arrow" size={16} /></span>
               </Link>
             ))}
           </div>
@@ -224,27 +224,27 @@ export default function Home() {
       {/* Block 8: dark product showcase (tabs + large workspace image) */}
       <section className="band dark">
         <div className="wrap">
-          <h2 className="center">A real CAD workspace. With an engineer’s brain.</h2>
+          <h2 className="center">A Real CAD Workspace. With an Engineer’s Brain.</h2>
           <Showcase />
         </div>
       </section>
 
-      {/* Block 9: "AI-assisted. Engineer-approved." three steps with arrows
+      {/* Block 9: "AI-Assisted. Engineer-Approved." three steps with arrows
           between them (the arrow <li>s are decoration, hidden from screen
           readers, and turn downward on small screens) */}
       <section className="sec">
         <div className="wrap center">
-          <h2>AI-assisted. Engineer-approved.</h2>
+          <h2>AI-Assisted. Engineer-Approved.</h2>
           <ol className="steps">
-            <li><span className="num">1</span><h3>AI drafts.</h3><p>Every result is labelled <i>AI-generated, unstamped</i>.</p></li>
+            <li><span className="num">1</span><h3>AI Drafts.</h3><p>Every result is labelled <i>AI-generated, unstamped</i>.</p></li>
             <li className="arrow-b" aria-hidden="true"><Icon name="arrow" size={28} /></li>
-            <li><span className="num">2</span><h3>We flag it.</h3><p>Life-safety and load-bearing items are automatically marked <i>Requires PE Review</i>.</p></li>
+            <li><span className="num">2</span><h3>We Flag It.</h3><p>Life-safety and load-bearing items are automatically marked <i>Requires PE Review</i>.</p></li>
             <li className="arrow-b" aria-hidden="true"><Icon name="arrow" size={28} /></li>
-            <li><span className="num">3</span><h3>A PE signs.</h3><p>Licensed engineers review, edit and digitally sign, with a full audit trail.</p></li>
+            <li><span className="num">3</span><h3>A PE Signs.</h3><p>Licensed engineers review, edit and digitally sign, with a full audit trail.</p></li>
           </ol>
           <p className="links2">
-            <Link href="/legal/ai-risk-disclosure" className="link-arrow">Read our AI Risk Disclosure <Icon name="arrow" size={16} /></Link>
-            <Link href="/trust" className="link-arrow">Trust center <Icon name="arrow" size={16} /></Link>
+            <Link href="/legal/ai-risk-disclosure" className="link-arrow">Read Our AI Risk Disclosure <Icon name="arrow" size={16} /></Link>
+            <Link href="/trust" className="link-arrow">Trust Center <Icon name="arrow" size={16} /></Link>
           </p>
         </div>
       </section>
@@ -253,7 +253,7 @@ export default function Home() {
       <section className="sec sec-alt">
         <div className="wrap">
           <div className="sec-head center">
-            <h2>How BuildSync stacks up.</h2>
+            <h2>How BuildSync Stacks Up.</h2>
             <p className="sub">Side by side with the tools you already use.</p>
           </div>
           <CompareTable />
@@ -264,17 +264,17 @@ export default function Home() {
           quotes until real, approved ones exist (spec rule). */}
       <section className="sec">
         <div className="wrap center">
-          <h2>Built and validated one jurisdiction at a time.</h2>
+          <h2>Built and Validated One Jurisdiction at a Time.</h2>
           <p className="sub wide">
             We train and test BuildSync on a full local code set and real reference plans, starting in the Caribbean. Each new
             jurisdiction is checked against held-out plans before it opens.
           </p>
           <ul className="stats">
-            <li><strong>1</strong><span>pilot jurisdiction</span></li>
-            <li><strong>~100</strong><span>reference plans</span></li>
-            <li><strong>Held-out</strong><span>plan testing</span></li>
+            <li><strong>1</strong><span>Pilot Jurisdiction</span></li>
+            <li><strong>~100</strong><span>Reference Plans</span></li>
+            <li><strong>Held-Out</strong><span>Plan Testing</span></li>
           </ul>
-          <Link href="/government" className="link-arrow">Bring BuildSync to your jurisdiction <Icon name="arrow" size={16} /></Link>
+          <Link href="/government" className="link-arrow">Bring BuildSync to Your Jurisdiction <Icon name="arrow" size={16} /></Link>
         </div>
       </section>
 
@@ -282,7 +282,7 @@ export default function Home() {
       <section className="sec sec-alt" id="pricing">
         <div className="wrap">
           <div className="sec-head center">
-            <h2>Plans for every stage.</h2>
+            <h2>Plans for Every Stage.</h2>
             <p className="sub">Start free and upgrade when your projects need more.</p>
           </div>
           <Pricing />
@@ -294,15 +294,15 @@ export default function Home() {
         <div className="wrap duo">
           <Link href="/learn" className="card learn">
             <span className="tile-ico"><Icon name="book" /></span>
-            <h3>Learn BuildSync free</h3>
+            <h3>Learn BuildSync Free</h3>
             <p>Tutorials, a demo project walkthrough and webinars.</p>
-            <span className="link-arrow">Start learning <Icon name="arrow" size={16} /></span>
+            <span className="link-arrow">Start Learning <Icon name="arrow" size={16} /></span>
           </Link>
           <Link href="/education" className="card learn">
             <span className="tile-ico"><Icon name="grad" /></span>
-            <h3>Free for students and educators</h3>
+            <h3>Free for Students and Educators</h3>
             <p>Verify with a school email and get the workspace at no cost.</p>
-            <span className="link-arrow">Get education access <Icon name="arrow" size={16} /></span>
+            <span className="link-arrow">Get Education Access <Icon name="arrow" size={16} /></span>
           </Link>
         </div>
       </section>
@@ -312,13 +312,13 @@ export default function Home() {
         <div className="wrap"><Newsletter /></div>
       </section>
 
-      {/* Block 15: final call-to-action band (dark): "Start free" and "Try the demo" */}
+      {/* Block 15: final call-to-action band (dark): "Start Free" and "Try the Demo" */}
       <section className="band dark cta">
         <div className="wrap center">
-          <h2>Your next plan, checked before it’s submitted.</h2>
+          <h2>Your Next Plan, Checked Before It’s Submitted.</h2>
           <div className="cta-btns">
-            <Link href="/signup" className="btn btn-primary btn-lg" data-track="start_free">Start free</Link>
-            <Link href="/demo" className="btn btn-secondary btn-lg" data-track="try_demo">Try the demo</Link>
+            <Link href="/signup" className="btn btn-primary btn-lg" data-track="start_free">Start Free</Link>
+            <Link href="/demo" className="btn btn-secondary btn-lg" data-track="try_demo">Try the Demo</Link>
           </div>
         </div>
       </section>

@@ -9,8 +9,8 @@
  *     - AnnouncementBar: the thin dark strip ("Early access: ...") that visitors
  *       can dismiss. Dismissal is remembered in the browser.
  *     - SiteHeader: the sticky header with the logo, desktop menu with
- *       mega-menus, the search overlay, the language label, "Log in",
- *       "Try the demo" / "Start free" buttons, and the full-screen mobile menu.
+ *       mega-menus, the search overlay, the language label, "Log In",
+ *       "Try the Demo" / "Start Free" buttons, and the full-screen mobile menu.
  *   Internal: Mega (renders one mega-menu panel).
  *
  * WHAT IT IS FOR
@@ -95,7 +95,7 @@ export function AnnouncementBar() {
       <p>
         <span className="ann-long">Early access: the civil engineering workspace is open. </span>
         <span className="ann-short">Early access is open. </span>
-        <Link href="/demo">Try the demo →</Link>
+        <Link href="/demo">Try the Demo →</Link>
       </p>
       {/* dismiss button: hides the bar now and remembers it ("bs-ann" = "1") */}
       <button
@@ -125,14 +125,14 @@ function Mega({ item, onNavigate }: { item: Extract<Item, { cols: unknown }>; on
   return (
     <div className="mega">
       <div className="mega-in">
-        {/* link columns; links with `soon` get a "Coming soon" tag */}
+        {/* link columns; links with `soon` get a "Coming Soon" tag */}
         {it.cols.map((c: any) => (
           <div key={c.title} className="mega-col">
             <h4>{c.title}</h4>
             {c.links.map((l: any) => (
               <Link key={l.label} href={l.href} onClick={onNavigate}>
                 {l.label}
-                {l.soon && <em className="tag">Coming soon</em>}
+                {l.soon && <em className="tag">Coming Soon</em>}
               </Link>
             ))}
           </div>
@@ -148,7 +148,7 @@ function Mega({ item, onNavigate }: { item: Extract<Item, { cols: unknown }>; on
         {/* waitlist form on the right (Disciplines). Not connected to anything yet. */}
         {it.waitlist && (
           <form className="mega-wait" onSubmit={(e) => e.preventDefault()}>
-            <strong>Join the waitlist</strong>
+            <strong>Join the Waitlist</strong>
             <input type="email" placeholder="Email" aria-label="Email" />
             <select aria-label="Discipline" defaultValue="electrical">
               <option value="electrical">Electrical</option>
@@ -265,9 +265,9 @@ export function SiteHeader() {
           <div className="hdr-r">
             <button className="icon-btn" aria-label="Search" onClick={() => setSearch(true)}><Icon name="search" /></button>
             <button className="loc" aria-label="Language and region">EN · US</button>
-            <Link href="/login" className="nav-l">Log in</Link>
-            <Link href="/demo" className="btn btn-secondary btn-sm">Try the demo</Link>
-            <Link href="/signup" className="btn btn-primary btn-sm">Start free</Link>
+            <Link href="/login" className="nav-l">Log In</Link>
+            <Link href="/demo" className="btn btn-secondary btn-sm">Try the Demo</Link>
+            <Link href="/signup" className="btn btn-primary btn-sm">Start Free</Link>
           </div>
           {/* hamburger: only visible on small screens; opens the mobile menu */}
           <button className="icon-btn burger" aria-label="Open menu" aria-expanded={mobile} onClick={() => setMobile(true)}><Icon name="menu" size={24} /></button>
@@ -280,18 +280,18 @@ export function SiteHeader() {
           <div className="overlay-in">
             <div className="search-row">
               <Icon name="search" size={24} />
-              <input autoFocus placeholder="Search features, pages, building codes" aria-label="Search" />
+              <input autoFocus placeholder="Search Features, Pages, Building Codes" aria-label="Search" />
               <button className="icon-btn" aria-label="Close search" onClick={() => setSearch(false)}><Icon name="close" /></button>
             </div>
-            <h4>Recent searches</h4>
+            <h4>Recent Searches</h4>
             <div className="chips">
-              {["Hurricane stress test", "Section 5 permit check", "Prompt-to-Plan", "Student access"].map((s) => (
+              {["Hurricane Stress Test", "Section 5 Permit Check", "Prompt-to-Plan", "Student Access"].map((s) => (
                 <Link key={s} href="/product" className="chip" onClick={() => setSearch(false)}>{s}</Link>
               ))}
             </div>
             <h4>Suggested</h4>
             <div className="chips">
-              {["Code compliance", "Scheduling", "Pricing", "Connectors", "Government"].map((s) => (
+              {["Code Compliance", "Scheduling", "Pricing", "Connectors", "Government"].map((s) => (
                 <Link key={s} href="/product" className="chip" onClick={() => setSearch(false)}>{s}</Link>
               ))}
             </div>
@@ -299,7 +299,7 @@ export function SiteHeader() {
         </div>
       )}
 
-      {/* mobile menu (full screen): accordion sections, then "Log in", with the
+      {/* mobile menu (full screen): accordion sections, then "Log In", with the
           two CTAs pinned at the bottom. Every link closes the menu. */}
       {mobile && (
         <div className="sheet" role="dialog" aria-modal="true" aria-label="Menu">
@@ -327,11 +327,11 @@ export function SiteHeader() {
                 <Link key={n.label} href={n.href} className="acc-l" onClick={() => setMobile(false)}>{n.label}</Link>
               )
             )}
-            <Link href="/login" className="acc-l" onClick={() => setMobile(false)}>Log in</Link>
+            <Link href="/login" className="acc-l" onClick={() => setMobile(false)}>Log In</Link>
           </div>
           <div className="sheet-cta">
-            <Link href="/demo" className="btn btn-secondary">Try the demo</Link>
-            <Link href="/signup" className="btn btn-primary">Start free</Link>
+            <Link href="/demo" className="btn btn-secondary">Try the Demo</Link>
+            <Link href="/signup" className="btn btn-primary">Start Free</Link>
           </div>
         </div>
       )}

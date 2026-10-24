@@ -7,7 +7,7 @@
  * WHAT IT DOES
  *   Exports Pricing: a Monthly / Yearly switch and four plan cards
  *   (Student Free, Student Pro, Engineer [Recommended], Government), plus a
- *   "Compare every feature" link (homepage Block 12, "Plans for every stage.").
+ *   "Compare Every Feature" link (homepage Block 12, "Plans for Every Stage.").
  *
  * WHAT IT IS FOR
  *   Shows the plans and sends visitors to sign up with the right plan
@@ -15,7 +15,7 @@
  *
  * PRICES ARE NOT FINAL
  *   Student Pro and Engineer prices come from PRICES in lib/site.ts and show
- *   the placeholder text "{{PRICE}}". "$0" (Student Free) and "Annual contract"
+ *   the placeholder text "{{PRICE}}". "$0" (Student Free) and "Annual Contract"
  *   (Government) are typed directly below because they never change.
  *
  * WHY "use client"
@@ -30,12 +30,12 @@
  *   - The two switch buttons carry aria-pressed so screen readers announce
  *     which one is selected.
  *   - A bullet written as "Text|soon" is split on "|": the part after it
- *     triggers a grey "Coming soon" tag (see "Civil 3D import|soon").
+ *     triggers a grey "Coming Soon" tag (see "Civil 3D Import|soon").
  *   - Plan card links: /signup?plan=... and /government#contact. Those pages
  *     do not exist yet (404).
  *   - `track: "contact_sales"` becomes data-track="contact_sales", a label for
  *     future analytics. No tracking script reads it yet.
- *   - The "2 months free" tag is static text next to the switch.
+ *   - The "2 Months Free" tag is static text next to the switch.
  *   - Styles: app/globals.css under "pricing". The cards are 4 columns on wide
  *     screens, 2 columns at 1100px and below, 1 column at 600px and below.
  */
@@ -55,15 +55,15 @@ export function Pricing() {
   // The four plan cards, in display order.
   //   price/unit  big price text and the small text after it
   //   for         one-line audience description
-  //   bullets     feature list ("Text|soon" adds a "Coming soon" tag)
+  //   bullets     feature list ("Text|soon" adds a "Coming Soon" tag)
   //   cta/href    button label and where it goes
   //   rec         true = highlighted "Recommended" card
   //   track       optional analytics label placed in data-track
   const plans = [
-    { name: "Student Free", price: "$0", unit: "", for: "Learning and portfolios", bullets: ["1 active project", "Compliance check (limited)", "2D/3D viewer", "Community support"], cta: "Start free", href: "/signup?plan=student" },
-    { name: "Student Pro", price: PRICES.studentPro[k], unit: "/ mo", for: "Full features for students", bullets: ["Unlimited learning projects", "Stress tests", "Scheduling", "Ask BuildSync"], cta: "Get started", href: "/signup?plan=student" },
-    { name: "Engineer", rec: true, price: PRICES.engineer[k], unit: "/ seat / mo", for: "Professionals", bullets: ["Full workspace", "All analyses", "Cost & workforce", "Agent Council", "Connectors", "PE sign-off workflow", "Civil 3D import|soon"], cta: "Get started", href: "/signup?plan=engineer" },
-    { name: "Government", price: "Annual contract", unit: "", for: "Cities, counties, national authorities", bullets: ["Permit pre-check", "City digital twin", "Emergency routing", "Jurisdiction code set", "Dedicated onboarding"], cta: "Contact sales", href: "/government#contact", track: "contact_sales" },
+    { name: "Student Free", price: "$0", unit: "", for: "Learning and Portfolios", bullets: ["1 Active Project", "Compliance Check (Limited)", "2D/3D Viewer", "Community Support"], cta: "Start Free", href: "/signup?plan=student" },
+    { name: "Student Pro", price: PRICES.studentPro[k], unit: "/ mo", for: "Full Features for Students", bullets: ["Unlimited Learning Projects", "Stress Tests", "Scheduling", "Ask BuildSync"], cta: "Get Started", href: "/signup?plan=student" },
+    { name: "Engineer", rec: true, price: PRICES.engineer[k], unit: "/ seat / mo", for: "Professionals", bullets: ["Full Workspace", "All Analyses", "Cost & Workforce", "Agent Council", "Connectors", "PE Sign-Off Workflow", "Civil 3D Import|soon"], cta: "Get Started", href: "/signup?plan=engineer" },
+    { name: "Government", price: "Annual Contract", unit: "", for: "Cities, Counties, National Authorities", bullets: ["Permit Pre-Check", "City Digital Twin", "Emergency Routing", "Jurisdiction Code Set", "Dedicated Onboarding"], cta: "Contact Sales", href: "/government#contact", track: "contact_sales" },
   ];
   return (
     <div>
@@ -71,7 +71,7 @@ export function Pricing() {
       <div className="toggle" role="group" aria-label="Billing period">
         <button className={!yearly ? "on" : ""} aria-pressed={!yearly} onClick={() => setYearly(false)}>Monthly</button>
         <button className={yearly ? "on" : ""} aria-pressed={yearly} onClick={() => setYearly(true)}>Yearly</button>
-        <span className="tag tag-accent">2 months free</span>
+        <span className="tag tag-accent">2 Months Free</span>
       </div>
       <div className="plans">
         {plans.map((p) => (
@@ -84,14 +84,14 @@ export function Pricing() {
             <ul>
               {p.bullets.map((b) => {
                 const [t, soon] = b.split("|");
-                return <li key={b}><Icon name="check" size={16} />{t}{soon && <em className="tag">Coming soon</em>}</li>;
+                return <li key={b}><Icon name="check" size={16} />{t}{soon && <em className="tag">Coming Soon</em>}</li>;
               })}
             </ul>
             <Link href={p.href} className={`btn ${p.rec ? "btn-primary" : "btn-secondary"}`} data-track={p.track}>{p.cta}</Link>
           </article>
         ))}
       </div>
-      <p className="center"><Link href="/pricing" className="link-arrow">Compare every feature <Icon name="arrow" size={16} /></Link></p>
+      <p className="center"><Link href="/pricing" className="link-arrow">Compare Every Feature <Icon name="arrow" size={16} /></Link></p>
     </div>
   );
 }

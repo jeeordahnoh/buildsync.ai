@@ -7,8 +7,8 @@
  * WHAT IT DOES
  *   Renders the top section of the homepage (Block 2):
  *     - eyebrow pill, two-line headline, short description
- *     - email box + "Start free" button (goes to /signup?email=...)
- *     - "Try the demo - no signup needed" link and the trust line
+ *     - email box + "Start Free" button (goes to /signup?email=...)
+ *     - "Try the Demo - No Signup Needed" link and the trust line
  *     - a large preview frame of the workspace that changes every 4 seconds
  *       through 4 states (compliance, section cut, hurricane test, 3-month query)
  *
@@ -52,10 +52,10 @@ import { Icon } from "./Icon";
 // The four states the preview cycles through, in order (spec Block 2).
 // view = which WorkspaceMock screen to draw; chip = caption pill text.
 const STATES: { view: MockView; chip: string }[] = [
-  { view: "compliance", chip: "① Compliance check" },
-  { view: "section", chip: "② Section cut" },
-  { view: "stress", chip: "③ 200 mph hurricane stress test" },
-  { view: "timeline", chip: "④ 3-month time-window query" },
+  { view: "compliance", chip: "① Compliance Check" },
+  { view: "section", chip: "② Section Cut" },
+  { view: "stress", chip: "③ 200 mph Hurricane Stress Test" },
+  { view: "timeline", chip: "④ 3-Month Time-Window Query" },
 ];
 
 /**
@@ -93,8 +93,8 @@ export function Hero() {
     <section className="hero">
       {/* top block: eyebrow, headline, description, email capture, demo link, trust line */}
       <div className="wrap hero-top">
-        <span className="pill-eyebrow">Free for students · no card needed</span>
-        <h1>Check every plan against code.<br />Before it’s submitted.</h1>
+        <span className="pill-eyebrow">Free for Students · No Card Needed</span>
+        <h1>Check Every Plan Against Code.<br />Before It’s Submitted.</h1>
         <p className="lede">
           BuildSync AI reads your drawings, checks them against your jurisdiction’s building code, and turns them into a
           schedule, budget and stress-tested 3D model — in one workspace.
@@ -107,11 +107,11 @@ export function Hero() {
             router.push(`/signup?email=${encodeURIComponent(email)}`);
           }}
         >
-          <input type="email" required placeholder="Enter your work email" aria-label="Work email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <button className="btn btn-primary" data-track="start_free">Start free</button>
+          <input type="email" required placeholder="Enter Your Work Email" aria-label="Work email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <button className="btn btn-primary" data-track="start_free">Start Free</button>
         </form>
-        <Link href="/demo" className="link-arrow" data-track="try_demo">Try the demo — no signup needed <Icon name="arrow" size={16} /></Link>
-        <p className="trust-line">Advisory output · PE sign-off built in · Bring your own AI</p>
+        <Link href="/demo" className="link-arrow" data-track="try_demo">Try the Demo — No Signup Needed <Icon name="arrow" size={16} /></Link>
+        <p className="trust-line">Advisory Output · PE Sign-Off Built In · Bring Your Own AI</p>
       </div>
 
       {/* live preview: the whole frame is a link to the demo; hover/focus pauses the cycle */}

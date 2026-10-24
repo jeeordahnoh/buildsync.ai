@@ -52,7 +52,7 @@ import "@fontsource/ibm-plex-mono/500.css";     // IBM Plex Mono medium
 import "./globals.css";
 
 // Default title and description (also reused for Open Graph and Twitter cards).
-const title = "BuildSync AI — Check every plan against code";
+const title = "BuildSync AI — Check Every Plan Against Code";
 const description =
   "BuildSync AI reads your drawings, checks them against your jurisdiction's building code, and turns them into a schedule, budget and stress-tested 3D model.";
 

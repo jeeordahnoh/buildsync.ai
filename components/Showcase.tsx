@@ -6,8 +6,8 @@
  *
  * WHAT IT DOES
  *   Exports Showcase: the tabbed product gallery that sits inside the dark band
- *   on the homepage (Block 8, "A real CAD workspace. With an engineer's brain.").
- *   Five tabs (Section cut, Stress test, Compliance, 2D plan, Connectors). The
+ *   on the homepage (Block 8, "A Real CAD Workspace. With an Engineer's Brain.").
+ *   Five tabs (Section Cut, Stress Test, Compliance, 2D Plan, Connectors). The
  *   selected tab shows three bullet points on the left and a large workspace
  *   image on the right, then a button to open the demo.
  *
@@ -33,7 +33,7 @@
  *   - Layout classes (.tabs, .show-grid, .callouts, .show-img) are in
  *     app/globals.css under "dark bands". On screens 860px wide and below the
  *     bullets move under the image (.callouts order: 2).
- *   - "Open the demo workspace" goes to /demo, which does not exist yet (404).
+ *   - "Open the Demo Workspace" goes to /demo, which does not exist yet (404).
  */
 "use client";
 import Link from "next/link";
@@ -46,10 +46,10 @@ import { Icon } from "./Icon";
 //   view     which WorkspaceMock screen is drawn for this tab
 //   bullets  the three selling points shown next to the image
 const TABS: { label: string; view: MockView; bullets: string[] }[] = [
-  { label: "Section cut", view: "section", bullets: ["Slice the model anywhere and inspect framing, fill and foundations", "Toggle structure, roof and terrain layers", "Dimensions and levels stay live as you edit"] },
-  { label: "Stress test", view: "stress", bullets: ["Run wind, seismic and flood loads on your actual design", "Full math shown, with safety factors per member", "Failed members come with a suggested fix to approve"] },
+  { label: "Section Cut", view: "section", bullets: ["Slice the model anywhere and inspect framing, fill and foundations", "Toggle structure, roof and terrain layers", "Dimensions and levels stay live as you edit"] },
+  { label: "Stress Test", view: "stress", bullets: ["Run wind, seismic and flood loads on your actual design", "Full math shown, with safety factors per member", "Failed members come with a suggested fix to approve"] },
   { label: "Compliance", view: "compliance", bullets: ["Pass / review / fail per item for your jurisdiction", "Every result cites the code section", "Life-safety items flagged for PE review"] },
-  { label: "2D plan", view: "plan2d", bullets: ["Draw or import a plan, or start from a prompt", "Rooms, openings and dimensions in one command line", "Same model drives the 3D view and the schedule"] },
+  { label: "2D Plan", view: "plan2d", bullets: ["Draw or import a plan, or start from a prompt", "Rooms, openings and dimensions in one command line", "Same model drives the 3D view and the schedule"] },
   { label: "Connectors", view: "connectors", bullets: ["Claude, ChatGPT, Kimi, Gemini, local or custom MCP", "Route each task to the agent you trust for it", "Agents propose. You approve every edit"] },
 ];
 
@@ -77,7 +77,7 @@ export function Showcase() {
         </ul>
         <div className="show-img"><WorkspaceMock view={tab.view} /></div>
       </div>
-      <p className="center"><Link href="/demo" className="btn btn-primary">Open the demo workspace <Icon name="arrow" size={16} /></Link></p>
+      <p className="center"><Link href="/demo" className="btn btn-primary">Open the Demo Workspace <Icon name="arrow" size={16} /></Link></p>
     </div>
   );
 }

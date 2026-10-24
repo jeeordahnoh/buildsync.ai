@@ -8,7 +8,7 @@
  *   Exports CompareTable: a row of competitor buttons (Primavera P6, AutoCAD /
  *   Civil 3D, UpCodes, Procore) and, under it, a three-column table:
  *   Feature | BuildSync | the selected competitor (homepage Block 10,
- *   "How BuildSync stacks up.").
+ *   "How BuildSync Stacks Up.").
  *
  * WHAT IT IS FOR
  *   Shows how BuildSync compares with the tools visitors already use.
