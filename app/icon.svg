@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  BuildSync AI · app/icon.svg
+
+  Author:    Giordano Bertin-Maurice
+  Copyright: © 2026 Giordano Bertin-Maurice. All rights reserved.
+
+  WHAT IT IS: the browser-tab icon (favicon) of the website: the BuildSync logo
+  mark, a white "B" on a rounded blue square (same mark as the logo in the page
+  header). Next.js finds this file by its name and adds the <link rel="icon">
+  tag automatically.
+  WHAT IT IS FOR: modern browsers show this vector icon in tabs and bookmarks.
+  Older browsers use app/favicon.ico; iPhones and iPads use app/apple-icon.png.
+  IF IT CHANGES: update all three files together so the icon looks the same
+  everywhere. The "B" is drawn as a path (no font), so it looks identical on
+  every device. Colour #4C8DFF is the site's accent colour (--accent).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#4C8DFF"/>
+  <path fill="#fff" fill-rule="evenodd" d="M19 14H35C41.5 14 45.5 17.8 45.5 23C45.5 26.6 43.7 29.2 40.6 30.5C44.8 31.6 47.5 34.8 47.5 39.5C47.5 45.8 43 50 35.8 50H19Z M26.5 20.2V28.2H34C37.2 28.2 38.8 26.8 38.8 24.2C38.8 21.6 37.2 20.2 34 20.2Z M26.5 34V43.8H35C38.6 43.8 40.4 42.2 40.4 38.9C40.4 35.6 38.6 34 35 34Z"/>
+</svg>

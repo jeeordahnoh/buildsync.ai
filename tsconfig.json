@@ -1,0 +1,42 @@
+// BuildSync AI · tsconfig.json
+//
+// Author:    Giordano Bertin-Maurice
+// Copyright: © 2026 Giordano Bertin-Maurice. All rights reserved.
+//
+// WHAT IT DOES
+//   TypeScript settings for the project (read by `npm run typecheck`, by
+//   Next.js and by code editors). This file may contain // comments: TypeScript
+//   accepts them in tsconfig.json.
+//
+// WHAT IT IS FOR
+//   Makes TypeScript strict (catches mistakes early) and tells it how Next.js
+//   compiles the code.
+//
+// IF SOMETHING BREAKS
+//   - "Cannot find module '@/...'": the `paths` entry below maps "@/" to the
+//     project root. "@/components/Hero" means ./components/Hero.
+//   - Next.js may add or adjust some options by itself the first time you run
+//     `npm run dev` / `npm run build`. That is normal.
+//   - TypeScript is pinned to version 5 in package.json. Version 6 removed an
+//     option that Next.js still relies on for the "@/" paths.
+{
+  "compilerOptions": {
+    "target": "ES2020",                          // language level used for type checking
+    "lib": ["dom", "dom.iterable", "esnext"],    // built-in types available (browser + modern JS)
+    "allowJs": false,                            // TypeScript files only
+    "skipLibCheck": true,                        // do not re-check third-party type files (faster)
+    "strict": true,                              // strictest type checking
+    "noEmit": true,                              // `tsc` only checks types; Next.js does the compiling
+    "esModuleInterop": true,                     // smoother import of CommonJS packages
+    "module": "esnext",
+    "moduleResolution": "bundler",               // resolve imports the way Next.js bundles them
+    "resolveJsonModule": true,                   // allow importing .json files
+    "isolatedModules": true,                     // every file must compile on its own (Next.js requirement)
+    "jsx": "preserve",                           // leave JSX for Next.js to compile
+    "incremental": true,                         // remember results between runs (.tsbuildinfo, git-ignored)
+    "plugins": [{ "name": "next" }],             // Next.js editor plugin (extra checks in the editor)
+    "paths": { "@/*": ["./*"] }                  // "@/x" means "<project root>/x"
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],  // files to type-check
+  "exclude": ["node_modules"]                    // never type-check installed packages
+}
