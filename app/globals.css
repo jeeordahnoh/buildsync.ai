@@ -143,14 +143,15 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .tag-accent { background: #e4eeff; color: var(--accent-h); }
 
 /* ---------------------------------------------------------------------------
-   Logo (the <Logo /> component in components/Icon.tsx): a rounded square with a
-   "B" plus the word. The square turns blue on dark bands and in the centre card
-   of the how-it-works diagram.
+   Logo (the <Logo /> component in components/Icon.tsx): the BuildSync AI logo
+   image (public/buildsync-logo-ink.png: brand-blue wordmark on a transparent
+   background, made for light backgrounds). Only its height is set; the width
+   follows from the image's proportions (405 x 93). The how-it-works centre card
+   (.hiw-mark) and the mobile menu top bar (.sheet-top) override the height.
    --------------------------------------------------------------------------- */
-.logo { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
-.logo-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--black); color: #fff; font-size: 16px; }
-/* blue logo square on dark bands and in the how-it-works centre card */
-.dark .logo-mark, .hiw-mark .logo-mark { background: var(--accent); }
+.logo { display: block; height: 30px; width: auto; max-width: 100%; }
+.hiw-mark .logo { height: 36px; }
+.sheet-top .logo { height: 26px; }
 
 /* ---------------------------------------------------------------------------
    Announcement bar (AnnouncementBar in components/Header.tsx). Black strip with
@@ -279,15 +280,22 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 
 /* ---------------------------------------------------------------------------
    Feature carousel (components/Carousel.tsx).
-   .car-track = sideways scrolling row that snaps card by card; .fcard = one card
-   (304px wide, 272px on phones); .fcard-img = dark thumbnail area; .fcard-body =
-   text and buttons; .car-ctl / .round = previous/next buttons.
-   KEEP IN SYNC: the scroll step 324 in Carousel.tsx = card width 304 + gap 20.
+   .car-track = sideways scrolling row that snaps card by card; .fcard = one card;
+   .fcard-img = dark thumbnail area; .fcard-body = text and buttons;
+   .car-ctl / .round = previous/next buttons.
+   Card width is fluid so a whole number of cards fits the row and none is cut off
+   at the edge: 4 across by default (the row is 1184px wide at most, so about
+   281px per card), 3 across at 1279px and below, 2 across at 999px and below
+   (those two rules are in the responsive section at the end of this file). On
+   phones (600px and below) cards are a fixed 272px and the track runs out to the
+   screen edge, so the next card peeks in on purpose.
+   The scroll step in Carousel.tsx is measured from the first card and the 20px
+   gap below, so it needs no change when widths change.
    --------------------------------------------------------------------------- */
 .car { position: relative; }
-.car-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 4px 16px; scrollbar-width: none; }
+.car-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 4px; padding: 4px 4px 16px; scrollbar-width: none; }
 .car-track::-webkit-scrollbar { display: none; }
-.fcard { flex: 0 0 304px; height: 440px; scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; transition: box-shadow .2s, transform .2s; isolation: isolate; }
+.fcard { flex: 0 0 calc((100% - 60px) / 4); min-height: 440px; scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; transition: box-shadow .2s, transform .2s; isolation: isolate; }
 @media (hover: hover) { .fcard:hover { box-shadow: 0 16px 36px rgba(13,16,21,.1); transform: translateY(-3px); } }
 .fcard-img { height: 150px; background: #0b0e13; overflow: hidden; display: grid; align-items: center; }
 /* Safari: overflow hidden + border-radius can fail to clip children while they animate; isolation: isolate on .preview-frame, .fcard, .spot and .show-img prevents it */
@@ -312,7 +320,6 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
    --------------------------------------------------------------------------- */
 .hiw { position: relative; max-width: 920px; margin: 48px auto 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 220px; align-items: stretch; }
 .hiw-mark { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); z-index: 2; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 22px 26px; box-shadow: 0 10px 30px rgba(13,16,21,.08); }
-.hiw-mark .logo { font-size: 20px; }
 .hiw-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; text-align: left; position: relative; z-index: 1; }
 .hiw-card h3 { margin: 14px 0 4px; }
 .hiw-card p { color: var(--mute); font-size: 15px; }
@@ -500,6 +507,62 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 .legal .loc { margin-left: auto; padding: 0; }
 
 /* ---------------------------------------------------------------------------
+   Information pages (every page except the homepage: components/InfoPage.tsx and
+   components/InfoForm.tsx, wording in lib/pages.ts).
+   .ph = grey page header; .crumbs = breadcrumb trail; .lede = intro sentence;
+   .ph-btns = header buttons; .inote = amber notice (draft pages, form messages);
+   .igrid (.cols-2 / .cols-3) = card grid; .icard = one card (.icard-link when the
+   whole card is a link); .isteps / .istep = numbered steps; .ichecks = tick list;
+   .iprose = reading column for legal and long text; .isample / .irow = sample
+   result panel (colours .t-ok / .t-warn / .t-bad / .t-info); .iform / .fld = forms.
+   Responsive tweaks for these are in the 999px, 860px and 600px blocks at the end.
+   --------------------------------------------------------------------------- */
+.ph { background: var(--off); border-bottom: 1px solid var(--line); padding: 48px 0 64px; }
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-bottom: 24px; font-size: 14px; color: var(--mute); }
+.crumbs a { color: var(--mute); }
+.crumbs i { font-style: normal; margin-right: 4px; opacity: .6; }
+@media (hover: hover) { .crumbs a:hover { color: var(--black); text-decoration: underline; } }
+.ph h1 { max-width: 900px; }
+.ph .lede { max-width: 720px; margin-top: 18px; font-size: 20px; color: var(--mute); }
+.ph-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.inote { margin-top: 20px; max-width: 720px; padding: 12px 16px; border: 1px solid #f1d58a; border-radius: 12px; background: #fff8e6; color: #7a5200; font-size: 15px; }
+.igrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.igrid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.igrid > li { display: flex; min-width: 0; }
+.icard { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 28px; background: #fff; border: 1px solid var(--line); border-radius: 16px; transition: box-shadow .2s, transform .2s; }
+@media (hover: hover) { .icard-link:hover { box-shadow: 0 16px 36px rgba(13,16,21,.1); transform: translateY(-3px); } }
+.icard h3 { display: flex; align-items: center; flex-wrap: wrap; font-size: 21px; }
+.icard p { color: var(--mute); font-size: 16px; }
+.icard .link-arrow { margin-top: auto; padding-top: 6px; }
+.isteps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.istep { padding: 28px; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+.istep .num { display: grid; place-items: center; width: 36px; height: 36px; margin-bottom: 14px; border-radius: 9999px; background: var(--black); color: #fff; font-family: var(--mono); font-size: 15px; }
+.istep p { margin-top: 6px; color: var(--mute); font-size: 16px; }
+.ichecks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 40px; }
+.ichecks li { display: flex; align-items: flex-start; gap: 12px; font-size: 17px; }
+.ichecks svg { flex: none; margin-top: 4px; color: var(--accent-h); }
+.iprose { max-width: 760px; }
+.iprose p { margin-top: 14px; font-size: 17px; color: #2b323d; }
+.iprose p:first-child { margin-top: 0; }
+.isample { max-width: 640px; padding: 24px 28px; border-radius: 16px; background: var(--black); color: #fff; }
+.isample h3 { margin-bottom: 12px; font-size: 16px; }
+.irow { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,.1); }
+.irow b { font-weight: 500; color: #c8cfdb; }
+.irow span { font-family: var(--mono); font-size: 14px; }
+.t-ok { color: #4ade80; }
+.t-warn { color: #fbbf24; }
+.t-bad { color: #f87171; }
+.t-info { color: #9aa5b8; }
+.ileft { justify-content: flex-start; }
+.iform { display: grid; gap: 16px; max-width: 520px; padding: 28px; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+.fld { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+.fld input, .fld select, .fld textarea { width: 100%; padding: 0 14px; border: 1px solid #cfd3d9; border-radius: 12px; background: #fff; font-size: 16px; font-weight: 400; }
+.fld input, .fld select { height: 48px; }
+.fld textarea { min-height: 130px; padding-top: 12px; padding-bottom: 12px; resize: vertical; font-family: inherit; }
+.iform .small a { color: var(--accent-h); font-weight: 600; }
+@media (hover: hover) { .iform .small a:hover { text-decoration: underline; } }
+
+/* ---------------------------------------------------------------------------
    Motion preferences.
    First block: for visitors who have NOT asked for reduced motion, every
    .sec / .band fades and rises in over half a second when the page loads
@@ -518,7 +581,9 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
    Responsive rules (everything here overrides the rules above, so it stays last).
      max-width 1320px  compact header: desktop menu becomes the hamburger (the
                        full header needs about 1270px)
+     max-width 1279px  feature carousel shows 3 whole cards across (4 above)
      max-width 1100px  pricing and footer grids go to 2 columns
+     max-width  999px  feature carousel shows 2 whole cards across
      max-width  860px  two- and three-column layouts become one column; steps,
                        how-it-works and the showcase restack; smaller padding
      max-width  600px  phone tweaks: smaller text, 16px page margins, short
@@ -536,6 +601,9 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
   .hdr-r { margin-left: auto; }
   .burger { display: inline-grid; margin-left: 0; }
 }
+/* feature carousel: whole cards only, so no card is cut off at the edge. 3 across here, 2 across at 999px and below (phones: see the 600px block) */
+@media (max-width: 1279px) { .fcard { flex-basis: calc((100% - 40px) / 3); } }
+@media (max-width: 999px) { .fcard { flex-basis: calc((100% - 20px) / 2); } .igrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 /* tablets: 2-column pricing and footer grids */
 @media (max-width: 1100px) {
   .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -545,6 +613,8 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
 /* large phones and small tablets: single-column layouts */
 @media (max-width: 860px) {
   .duo, .trio, .show-grid { grid-template-columns: minmax(0, 1fr); }
+  .isteps, .ichecks { grid-template-columns: minmax(0, 1fr); }
+  .ph { padding: 36px 0 48px; }
   .steps { flex-direction: column; align-items: center; }
   .steps li:not(.arrow-b) { max-width: 100%; width: 100%; }
   .arrow-b { transform: rotate(90deg); }
@@ -564,7 +634,11 @@ h3 { font-size: 20px; line-height: 1.3; font-weight: 600; }
   .ann-short { display: inline; }
   .hero { padding: 40px 0 40px; }
   .plans, .stats, .foot-grid { grid-template-columns: minmax(0, 1fr); }
+  /* phones: fixed 272px cards; the track runs out to the screen edges (cancels the 16px page margin) so the next card peeks in from the edge instead of being cut off in mid-air */
   .fcard { flex-basis: 272px; }
+  .car-track { margin: 0 -16px; padding-left: 20px; padding-right: 20px; scroll-padding: 0 20px; }
+  .igrid, .igrid.cols-2 { grid-template-columns: minmax(0, 1fr); }
+  .icard, .istep, .iform { padding: 22px; }
   .news { padding: 24px; }
   .card { padding: 24px 20px; }
   .council { padding: 12px; }

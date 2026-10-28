@@ -32,8 +32,9 @@
  *     useEffect.
  *   - To change what the preview shows, edit STATES below (view = which
  *     WorkspaceMock screen, chip = caption text).
- *   - Submitting the email goes to /signup?email=<typed email>. /signup does
- *     not exist yet, so it shows a 404 until that page is built.
+ *   - Submitting the email goes to /signup?email=<typed email>: the sign-up page
+ *     (lib/pages.ts) pre-fills the email. Its form is not connected yet (see
+ *     components/InfoForm.tsx).
  *   - In React dev mode (Strict Mode) effects run twice on purpose; this is
  *     normal and does not happen in the production build.
  *   - `data-track="start_free"` / `"try_demo"` are click-tracking labels for

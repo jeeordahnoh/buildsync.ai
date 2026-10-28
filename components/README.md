@@ -37,5 +37,7 @@ the server.
 | `Footer.tsx` | Site footer |
 | `Icon.tsx` | Built-in icon set and the BuildSync logo |
 | `WorkspaceMock.tsx` | SVG stand-in for the real workspace screenshots |
+| `InfoPage.tsx` | Draws one information page (header, sections, related cards, call to action) from its entry in `lib/pages.ts` |
+| `InfoForm.tsx` | The sign-up, log-in, contact, waitlist and government forms (not connected: they show a notice instead of sending anything) |
 
 Author: Giordano Bertin-Maurice. Copyright © 2026 Giordano Bertin-Maurice. All rights reserved.

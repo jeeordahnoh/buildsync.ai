@@ -68,7 +68,9 @@
  *   - Not wired yet: the search box has no search backend (the "recent" and
  *     "suggested" chips are fixed placeholders linking to /product), and the
  *     waitlist form only prevents the page reload; it sends nothing.
- *   - Routes /demo, /signup, /login and the menu pages do not exist yet (404).
+ *   - Menu links to /demo and /features/simulation show a 404: those two pages are
+ *     not built yet (on purpose). The other menu pages are in lib/pages.ts. Compare
+ *     and Pricing jump to the homepage sections /#compare and /#pricing.
  */
 "use client";
 import Link from "next/link";

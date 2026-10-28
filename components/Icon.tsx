@@ -7,7 +7,7 @@
  * WHAT IT DOES
  *   Exports two small building blocks:
  *     - Icon: draws a line icon (inline SVG) chosen by name from the PATHS map.
- *     - Logo: the BuildSync mark (a "B" square) plus the "BuildSync" wordmark.
+ *     - Logo: the BuildSync AI logo, an image (public/buildsync-logo-ink.png).
  *
  * WHAT IT IS FOR
  *   A tiny built-in icon set so the site needs no icon library. All icons share
@@ -22,8 +22,16 @@
  *   - An icon renders as a cube: the name is misspelled or missing from PATHS
  *     (unknown names fall back to PATHS.cube on purpose).
  *   - To add an icon: add a new key to PATHS using 24x24 coordinates.
- *   - Logo styling lives in app/globals.css under "logo" (.logo, .logo-mark).
- *     `.logo-word` has no CSS rule; the wordmark inherits the .logo styles.
+ *   - The logo is missing (broken-image icon): the file
+ *     public/buildsync-logo-ink.png was moved or renamed. Next.js serves
+ *     everything in public/ from the site root, so the URL is
+ *     /buildsync-logo-ink.png.
+ *   - The logo is the wrong size: its height is set in app/globals.css under
+ *     "logo" (.logo, plus one override each for the how-it-works centre card and
+ *     the mobile menu). The width follows from the image's proportions.
+ *   - To change the logo, replace the PNG in public/ (keep the file name, or
+ *     update `src` in Logo below). The solid blue badge version and the full
+ *     square original are kept next to it (see public/README.md).
  */
 
 // Icon drawings, keyed by the name used in <Icon name="..." />.
@@ -94,16 +102,26 @@ export function Icon({ name, size = 20, className }: { name: string; size?: numb
 }
 
 /**
- * The BuildSync logo: a rounded square containing "B", then the word
- * "BuildSync". Colours switch automatically on dark bands and in the
- * how-it-works centre card (see `.dark .logo-mark` in app/globals.css).
+ * The BuildSync AI logo: public/buildsync-logo-ink.png (405 x 93 px), the
+ * wordmark in the brand blue on a transparent background, with the "AI" box
+ * as a blue block with white letters. It is made for LIGHT backgrounds, which is
+ * everywhere the logo appears today (white header, mobile menu, footer and
+ * how-it-works card). For a dark or blue background use the solid badge
+ * public/buildsync-logo-wide.png instead.
+ * A plain <img> is used on purpose: it is one small fixed file served from this
+ * site, so Next.js image optimisation adds nothing. `width` and `height` are the
+ * file's real size; they only reserve the right space while loading, because CSS
+ * (.logo) sets the displayed height.
  * @param className  optional extra CSS class
  */
 export function Logo({ className }: { className?: string }) {
   return (
-    <span className={`logo ${className ?? ""}`}>
-      <span className="logo-mark" aria-hidden="true">B</span>
-      <span className="logo-word">BuildSync</span>
-    </span>
+    <img
+      className={`logo ${className ?? ""}`}
+      src="/buildsync-logo-ink.png"
+      width={405}
+      height={93}
+      alt="BuildSync AI"
+    />
   );
 }

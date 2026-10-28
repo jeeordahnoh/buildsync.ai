@@ -23,7 +23,9 @@
  *
  * IF SOMETHING BREAKS
  *   - To change footer links edit COLS below. Each entry is [label, href].
- *   - Most destination pages are not built yet (404).
+ *   - A link shows a 404: only /demo and /features/simulation are not built yet (on
+ *     purpose); the other pages are in lib/pages.ts. Compare and Pricing go to the
+ *     homepage sections /#compare and /#pricing.
  *   - The four social links and "Cookie Preferences" are placeholders
  *     (href="#"). Put the real social profile URLs and the cookie settings
  *     action in when they exist.
@@ -38,7 +40,7 @@ import { Icon, Logo } from "./Icon";
 
 // The four link columns: t = column title, l = list of [label, href].
 const COLS = [
-  { t: "Product", l: [["Workspace Tour", "/product"], ["Features", "/product#features"], ["Connectors", "/connectors"], ["Compare", "/compare"], ["Pricing", "/pricing"], ["Try the Demo", "/demo"]] },
+  { t: "Product", l: [["Workspace Tour", "/product"], ["Features", "/product#features"], ["Connectors", "/connectors"], ["Compare", "/#compare"], ["Pricing", "/#pricing"], ["Try the Demo", "/demo"]] },
   { t: "Solutions", l: [["Engineers", "/solutions/engineers"], ["Students", "/solutions/students"], ["Governments", "/solutions/government"], ["Disciplines", "/disciplines"], ["Pilot Program", "/government"]] },
   { t: "Company", l: [["About", "/company/about"], ["Careers", "/company/careers"], ["Newsroom", "/blog"], ["Trust Center", "/trust"], ["Contact Us", "/contact"]] },
   { t: "Support", l: [["Docs", "/learn"], ["Contact Support", "/contact"], ["Product Status", "/status"], ["Community", "/learn#community"], ["Education Support", "/education"]] },

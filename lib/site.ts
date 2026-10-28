@@ -22,8 +22,9 @@
  *   PRICES                      -> components/Pricing.tsx (Block 12 cards)
  *
  * IF SOMETHING BREAKS
- *   - A link goes to a 404: only "/" exists so far. Every other href here is
- *     a planned page from the spec (section 1, site map) that is not built yet.
+ *   - A link goes to a 404: every href here is a page in lib/pages.ts (served by
+ *     app/(marketing)/[...slug]/page.tsx) or a homepage section, except /demo and
+ *     /features/simulation, which are not built yet on purpose.
  *   - An icon shows up as a cube: the `icon` name is not a key of PATHS in
  *     components/Icon.tsx (unknown names fall back to the cube icon).
  *   - A card thumbnail looks wrong: `view` must be one of the MockView names in
@@ -48,7 +49,8 @@ export const PRICES = {
 // Header navigation (spec section 2.2).
 //  - An entry with `cols` is a dropdown: mega-menu on desktop, accordion in the
 //    mobile menu. Each column has a `title` and a list of `links`.
-//  - An entry with only `href` is a plain link (Compare, Pricing).
+//  - An entry with only `href` is a plain link (Compare and Pricing jump to the
+//    homepage sections "#compare" and "#pricing", they are not separate pages).
 //  - `spotlight` is the highlighted card in the right of a mega-menu.
 //  - `waitlist: true` shows the waitlist form in the mega-menu instead.
 //  - `soon: true` on a link adds a grey "Coming Soon" tag.
@@ -132,8 +134,8 @@ export const NAV = [
     waitlist: true,
   },
   // Plain links (no dropdown).
-  { label: "Compare", href: "/compare" },
-  { label: "Pricing", href: "/pricing" },
+  { label: "Compare", href: "/#compare" },
+  { label: "Pricing", href: "/#pricing" },
   // Learn: tutorials/docs/webinars/blog, education + community, demo spotlight.
   {
     label: "Learn",

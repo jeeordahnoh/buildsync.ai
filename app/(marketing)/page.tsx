@@ -42,9 +42,11 @@
  *     black. `sec-tight` = less vertical padding.
  *   - The INPUTS / AGENTS / COUNCIL / SPOTLIGHTS lists below hold the text for
  *     Blocks 5, 6 and 7. Change wording there.
- *   - `id="features"` and `id="pricing"` are anchor targets (for links such as
- *     "/#pricing"). No link uses them yet.
- *   - Many links go to pages that do not exist yet (404). Only "/" is built.
+ *   - `id="features"`, `id="compare"` and `id="pricing"` are anchor targets. The
+ *     header's Compare and Pricing links and the matching footer links go to
+ *     "/#compare" and "/#pricing".
+ *   - The other pages are information pages (lib/pages.ts, drawn by
+ *     components/InfoPage.tsx). /demo and /features/simulation are not built yet.
  *   - Example conversations and votes in Block 6 are fixed sample text from the
  *     spec, not live AI output.
  */
@@ -249,8 +251,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Block 10: compare table (competitor cells intentionally "[verify]", see components/Compare.tsx) */}
-      <section className="sec sec-alt">
+      {/* Block 10: compare table (competitor cells intentionally "[verify]", see components/Compare.tsx).
+          id="compare" is the target of the header and footer Compare links. */}
+      <section className="sec sec-alt" id="compare">
         <div className="wrap">
           <div className="sec-head center">
             <h2>How BuildSync Stacks Up.</h2>

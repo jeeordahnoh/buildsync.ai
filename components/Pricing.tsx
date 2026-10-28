@@ -31,8 +31,9 @@
  *     which one is selected.
  *   - A bullet written as "Text|soon" is split on "|": the part after it
  *     triggers a grey "Coming Soon" tag (see "Civil 3D Import|soon").
- *   - Plan card links: /signup?plan=... and /government#contact. Those pages
- *     do not exist yet (404).
+ *   - Plan card links: /signup?plan=... and /government#contact. Both pages are in
+ *     lib/pages.ts. "Compare Every Feature" jumps to the homepage section /#compare
+ *     (there is no separate pricing page; the header Pricing link goes to /#pricing).
  *   - `track: "contact_sales"` becomes data-track="contact_sales", a label for
  *     future analytics. No tracking script reads it yet.
  *   - The "2 Months Free" tag is static text next to the switch.
@@ -91,7 +92,7 @@ export function Pricing() {
           </article>
         ))}
       </div>
-      <p className="center"><Link href="/pricing" className="link-arrow">Compare Every Feature <Icon name="arrow" size={16} /></Link></p>
+      <p className="center"><Link href="/#compare" className="link-arrow">Compare Every Feature <Icon name="arrow" size={16} /></Link></p>
     </div>
   );
 }

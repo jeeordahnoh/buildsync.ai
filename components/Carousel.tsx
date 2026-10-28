@@ -23,11 +23,16 @@
  *   Thumbnails are drawn by components/WorkspaceMock.tsx (with `crop`).
  *
  * IF SOMETHING BREAKS
- *   - Arrow buttons scroll the wrong distance: `go()` moves 324 px = card width
- *     304 px + gap 20 px. Keep it in step with `.fcard { flex: 0 0 304px }` and
- *     `.car-track { gap: 20px }` in app/globals.css. On phones (600px and below)
- *     cards are 272 px wide, so one click moves a little more than one card;
- *     scroll-snap then settles on the nearest card.
+ *   - A card is cut off at the right edge: card widths are set in
+ *     app/globals.css (`.fcard`) so a whole number of cards fits the row: 4
+ *     across above 1279px, 3 across from 1000px, 2 across from 601px. On phones
+ *     (600px and below) cards are a fixed 272 px and the next card peeks in from
+ *     the screen edge on purpose, to show that the row scrolls.
+ *   - Arrow buttons scroll the wrong distance: `go()` measures the first card
+ *     (its width plus the track's column gap), so it follows the CSS widths on its
+ *     own. If the measurement fails it falls back to 324 px (the old fixed card
+ *     width 304 px + gap 20 px). One click moves one card; scroll-snap then
+ *     settles on the nearest card.
  *   - The row jumps instead of gliding: either the browser has no smooth
  *     scrolling (Safari before 15.4 uses `scrollLeft` instead) or the visitor's
  *     system has "reduce motion" switched on. Both are intended.
@@ -37,7 +42,8 @@
  *     list" / "End of 8-item list" (accessibility requirement in the spec).
  *   - A card thumbnail is wrong or blank: check `view` of that item in
  *     lib/site.ts. It is cast with `as MockView` because FEATURES is `as const`.
- *   - Buttons lead to 404s: /features/* and /demo are not built yet.
+ *   - Buttons lead to 404s: /demo and /features/simulation are not built yet (on
+ *     purpose). The other /features/* pages are in lib/pages.ts.
  *   - `data-track="feature_card_click"` is a label for future analytics; no
  *     tracking script reads it yet.
  */
@@ -53,13 +59,17 @@ import { WorkspaceMock, MockView } from "./WorkspaceMock";
  * `track` points at the scrolling <ul>. `go(d)` scrolls it by d cards
  * (d = 1 forward, -1 back): smoothly where the browser supports it and the
  * visitor has not asked for reduced motion, otherwise with an instant jump.
+ * One card = the first card's width + the gap between cards, measured from the
+ * page so it is right at every screen width (card width is fluid in the CSS).
  */
 export function FeatureCarousel() {
   const track = useRef<HTMLUListElement>(null);
   const go = (d: number) => {
     const el = track.current;
     if (!el) return;
-    const left = d * 324;
+    const card = el.firstElementChild as HTMLElement | null;
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 20;
+    const left = d * (card ? card.offsetWidth + gap : 324);
     // Smooth scrolling needs browser support (Safari before 15.4 has none) and is skipped for
     // visitors who asked for reduced motion; in those cases the row jumps instead.
     const canSmooth = "scrollBehavior" in document.documentElement.style;

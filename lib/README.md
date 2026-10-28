@@ -25,5 +25,6 @@ Plain data and helpers with no React in them.
 | File | What it does |
 |---|---|
 | `site.ts` | All shared content: header menus, discipline tiles, feature cards, compare rows and prices. Prices show `{{PRICE}}` until they are final |
+| `pages.ts` | The wording of every information page (product, features, solutions, disciplines, learn, trust, legal, company, sign-up ...). Add or edit a page here; `app/(marketing)/[...slug]/page.tsx` turns each entry into a route |
 
 Author: Giordano Bertin-Maurice. Copyright © 2026 Giordano Bertin-Maurice. All rights reserved.
